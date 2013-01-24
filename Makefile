@@ -6,7 +6,6 @@ all: \
 	pages/index.html \
 	pages/style.css \
 	pages/jquery.swipeshow.js \
-	pages/cycler.js \
 	pages/1.jpg \
 	pages/2.jpg \
 	pages/3.jpg \

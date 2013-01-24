@@ -55,7 +55,7 @@
 (function($) {
   $.swipeshow = {};
 
-  $.swipeshow.version = "0.9.0";
+  $.swipeshow.version = "0.9.1";
 
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
@@ -173,17 +173,10 @@
   }
 
   // Find the X offset of the container ('.slides').
-  // Attempt to parse it out of "matrix(1, 0, 0, 1, -200, 0)", otherwise resort to stored data.
+  // Attempting to parse it out of the transform value ("matrix(1, 0, 0, 1,
+  // -200, 0)") never seems to yield the right offset, so let's just go with
+  // the stored value.
   function getOffset($el) {
-    var offset = null;
-    if (transitions) {
-      var matrix = $el.css('transform');
-      var m = matrix.replace(/ /g,'').match(/matrix\((?:[\-\.\d+]+,){4}([\-\.\d+]+)/);
-      if (m[1]) {
-        return +m[1];
-      }
-    }
-
     return $el.data('swipeshow:left') || 0;
   }
 
@@ -232,14 +225,6 @@
       delta  = 0;
       lastTouch = null;
 
-      // Freeze the current offset. Not really perfect -- it will not stop at
-      // the precise offset, causing some 'flickery' behavior. (Also, let's
-      // check for minDelta == 0 so that we don't 'freeze' while tapping on a
-      // button, since there'll be that flickery thing...)
-      if (transitions && minDelta === 0) {
-        $container.css({ transform: $container.css('transform'), transition: 'none' });
-      }
-
       // Pause the slideshow, but resume it later.
       if (start.started) c.pause();
     });
@@ -262,7 +247,7 @@
       var max = -1 * width * (length - 1);
 
       // Only prevent scrolling when it's moved too far to the right/left
-      if (Math.abs(delta) > 2)
+      if (Math.abs(delta) > 3)
         e.preventDefault();
 
       // Have some friction when scrolling out of bounds.

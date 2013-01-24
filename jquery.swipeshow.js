@@ -97,13 +97,20 @@
 
       // Defer starting until images are loaded.
       if (options.autostart !== false) {
-        c.disabled = true;
-        $slideshow.addClass('disabled');
-        $slideshow.find('img').onloadall(function() {
-          c.disabled = false;
-          $slideshow.removeClass('disabled');
+        var $images = $slideshow.find('img');
+
+        if ($images.length > 0) {
+          c.disabled = true;
+          $slideshow.addClass('disabled');
+
+          $images.onloadall(function() {
+            c.disabled = false;
+            $slideshow.removeClass('disabled');
+            c.start();
+          });
+        } else {
           c.start();
-        });
+        }
       }
 
       // Bind

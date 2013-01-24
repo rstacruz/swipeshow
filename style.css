@@ -43,12 +43,12 @@ a:hover {
 }
 
 /* Super slide */
-.link-to-github {
+.with-overlay {
   position: relative;
 }
 
-.link-to-github img,
-.link-to-github .overlay {
+.with-overlay img,
+.with-overlay .overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -56,11 +56,11 @@ a:hover {
   right: 0;
 }
 
-.link-to-github img {
+.with-overlay img {
   z-index: 1;
 }
 
-.link-to-github .overlay {
+.with-overlay .overlay {
   z-index: 2;
   background: rgba(0, 10, 60, 0.75);
 
@@ -70,7 +70,7 @@ a:hover {
   line-height: 200px;
 }
 
-.link-to-github .in {
+.with-overlay .in {
   display: inline-block;
   vertical-align: middle;
   padding: 0 20px;
@@ -78,19 +78,19 @@ a:hover {
   line-height: 1.4em;
 }
 
-.link-to-github h3 {
+.with-overlay h3 {
   color: white;
   font-size: 1.6em;
   font-weight: 400;
   margin-bottom: 3px;
 }
 
-.link-to-github p {
+.with-overlay p {
   margin-bottom: 20px;
   color: #d0d0dd;
 }
 
-.link-to-github a {
+.with-overlay a.action {
   display: inline-block;
   padding: 3px 20px;
   border: solid 2px #ddd;

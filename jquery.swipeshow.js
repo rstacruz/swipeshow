@@ -262,7 +262,7 @@
       var max = -1 * width * (length - 1);
 
       // Only prevent scrolling when it's moved too far to the right/left
-      if (Math.abs(delta) > 2)
+      if (Math.abs(delta) > 3)
         e.preventDefault();
 
       // Have some friction when scrolling out of bounds.

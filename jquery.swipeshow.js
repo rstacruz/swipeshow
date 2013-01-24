@@ -270,7 +270,7 @@
 
 // ============================================================================
 
-/*! Onloadall (c) 2012 Rico Sta. Cruz, MIT license. */
+/*! Onloadall (c) 2012-2013 Rico Sta. Cruz, MIT license. */
 
 (function($) {
   $.fn.onloadall = function(callback) {
@@ -298,7 +298,7 @@
 
 // ============================================================================
 
-/*! Cycler (c) 2012 Rico Sta. Cruz, MIT license. */
+/*! Cycler (c) 2012-2013 Rico Sta. Cruz, MIT license. */
 
 // Cycles between a given `list` at a given `interval`.
 // Simply define an `onactivate` hook.

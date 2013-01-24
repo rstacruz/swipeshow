@@ -1,0 +1,32 @@
+//
+//     <div class="slideshow">
+//       <ul class="slides">
+//         <li class="slide">...</li>
+//       </ul>
+//     </div>
+//
+= horizontal-slideshow($width, $height)
+  &,
+  > .slides,
+  > .slides > .slide
+    display: block
+    width: $width
+    height: $height
+
+    margin: 0
+    padding: 0
+    list-style: none
+
+  &
+    overflow: hidden
+    position: relative
+
+  > .slides
+    width: 99999px
+
+    position: absolute
+    top: 0
+    left: 0
+
+  > .slides > .slide
+    float: left

@@ -1,0 +1,19 @@
+.slideshow,
+.slideshow > .slides,
+.slideshow > .slides > .slide {
+  display: block;
+  width: 300px;
+  height: 100px;
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+.slideshow {
+  overflow: hidden;
+  position: relative; }
+.slideshow > .slides {
+  width: 99999px;
+  position: absolute;
+  top: 0;
+  left: 0; }
+.slideshow > .slides > .slide {
+  float: left; }

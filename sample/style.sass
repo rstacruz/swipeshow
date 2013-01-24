@@ -2,3 +2,13 @@
 
 .slideshow
   +horizontal-slideshow(300px, 100px)
+
+/* Extras */
+.slide
+  -webkit-backface-visibility: hidden
+  -webkit-transition: opacity 300ms linear
+  -moz-transition: opacity 300ms linear
+  transition: opacity 300ms linear
+  opacity: 0.3
+.slide.active
+  opacity: 0.999

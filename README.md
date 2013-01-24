@@ -27,7 +27,7 @@ $(function() {
 ### HTML
 
 Swipeshow goes by the assumption  that your slideshow element looks like `.slides > .slide`. You
-are free to put whatever you want inside `.slide`, or even `.slides`!
+are free to put whatever you want inside `.slide`, or even `.slideshow`!
 
 ``` html
 <div class="slideshow">

@@ -46,8 +46,9 @@
 //
 //     $(".slideshow").swipeshow({
 //       autostart: true,
-//       interval: 3000,
+//       interval: 3000,     /* Time between movement (ms) */
 //       initial: 0,         /* First slide's index */
+//       speed: 700,         /* Animation speed (ms) */
 //
 //       onactivate: function(){},
 //       onpause: function(){},
@@ -64,6 +65,10 @@
   $.fn.swipeshow = function(options) {
     if (!options) options = {};
 
+    options = $.extend({}, {
+      speed: 700
+    }, options);
+
     $(this).each(function() {
       var $slideshow = $(this);
       var $container = $slideshow.find('> .slides');
@@ -75,7 +80,7 @@
       var c = new Cycler($slides, $.extend({}, options, {
         onactivate: function(current, i, prev, j) {
           if (options.onactivate) options.onactivate(current, i, prev, j);
-          setOffset($container, -1 * width * i);
+          setOffset($container, -1 * width * i, options.speed);
         }
       }));
 
@@ -115,21 +120,33 @@
   // Use transitions?
   var transitions = true;
 
-  function setOffset($el, left, instant) {
+  var offsetTimer;
+
+  function setOffset($el, left, speed) {
     $el.data('swipeshow:left', left);
     if (transitions) {
-      if (instant) {
+      if (speed === 0) {
         $el.css({ transform: 'translate3d('+left+'px,0,0)', transition: 'none' });
       } else {
-        $el.css({ transform: 'translate3d('+left+'px,0,0)', transition: 'all 300ms ease' });
+        $el.css({ transform: 'translate3d('+left+'px,0,0)', transition: 'all '+speed+'ms ease' });
       }
     } else {
-      if (instant) {
+      if (speed === 0) {
         $el.css({left: left});
       } else {
-        $el.animate({left: left});
+        $el.animate({left: left}, speed);
       }
     }
+
+    $el.addClass('animating');
+
+    if (typeof offsetTimer === 'undefined')
+      clearTimeout(offsetTimer);
+
+    offsetTimer = setTimeout(function() {
+      $el.removeClass('animating');
+      offsetTimer = undefined;
+    }, speed);
   }
 
   function getOffset($el) {
@@ -188,7 +205,7 @@
       if (target > 0) target *= friction;
       if (target < max) target = max + (target - max) * friction;
 
-      setOffset($container, target, true);
+      setOffset($container, target, 0);
     });
 
     $('body').on('mouseup touchend', function(e) {

@@ -43,6 +43,12 @@ $(".slideshow").swipeshow();
   margin: 0;
   padding: 0;
   list-style: none;
+
+  /* For flicker-prevention */
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 

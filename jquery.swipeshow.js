@@ -63,8 +63,8 @@
 //
 // Classes it adds:
 //
-//     .slide  -- gets `active` when it's the moving one
-//     .slides -- gets `gliding` when it's gliding
+// - `.slide`  -- gets `active` when it's the moving one
+// - `.slides` -- gets `gliding` when it's gliding
 
 (function($) {
   $.fn.swipeshow = function(options) {
@@ -188,7 +188,7 @@
         e.preventDefault();
 
       if (c.disabled) return;
-      if ($container.is(':animated') || $container.is('.gliding')) return;
+      if ($container.is(':animated')) return;
 
       c.pause();
 
@@ -201,7 +201,7 @@
 
     $('body').on('mousemove touchmove', function(e) {
       if (c.disabled) return;
-      if ($container.is(':animated') || $container.is('.gliding')) return;
+      if ($container.is(':animated')) return;
       if (!moving) return;
 
       var delta = getX(e) - origin.x;
@@ -221,7 +221,7 @@
 
     $('body').on('mouseup touchend', function(e) {
       if (c.disabled) return;
-      if ($container.is(':animated') || $container.is('.gliding')) return;
+      if ($container.is(':animated')) return;
       if (!moving) return;
 
       var left  = getOffset($container);

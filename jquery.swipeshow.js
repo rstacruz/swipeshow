@@ -18,7 +18,7 @@
 //
 //     $(".slideshow").swipeshow();
 //
-// Options (all of these are optional)
+// Options (all of these are optional):
 //
 //     $(".slideshow").swipeshow({
 //       autostart: true,
@@ -58,6 +58,10 @@
 //    starting the slideshow.
 
 (function($) {
+  $.swipeshow = {};
+
+  $.swipeshow.version = "0.9.0";
+
   $.fn.swipeshow = function(options) {
     // Idempotency:
     if ($(this).data('swipeshow'))

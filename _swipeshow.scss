@@ -1,9 +1,10 @@
+// Sass helper mixin for Wwipeshow.
 //
-//     <div class="slideshow">
-//       <ul class="slides">
-//         <li class="slide">...</li>
-//       </ul>
-//     </div>
+//     @import 'swipeshow';
+//
+//     .slideshow {
+//       @include swipeshow(200px, 150px);
+//     }
 //
 @mixin swipeshow($width, $height) {
   &,

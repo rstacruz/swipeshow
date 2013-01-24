@@ -247,6 +247,7 @@
 
       // Account for velocity.
       var delta = getX(e) - origin.x;
+      if (isNaN(delta)) delta = 0;
       var duration = +new Date() - timestart;
       var coef = 9 * Math.max(0, 300 - duration) / 300;
 

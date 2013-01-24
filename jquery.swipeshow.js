@@ -209,6 +209,7 @@
       moving = true;
       origin = { x: getX(e) };
       start  = { x: getOffset($container), started: c.isStarted() };
+      delta  = 0;
 
       c.pause();
 
@@ -220,7 +221,10 @@
       if ($container.is(':animated')) return;
       if (!moving) return;
 
-      delta = getX(e) - origin.x;
+      // X can sometimes be NaN because the touch event may not have any X/Y info.
+      var x = getX(e);
+      if (!isNaN(x)) delta = x - origin.x;
+
       var target = start.x + delta;
       var max = -1 * width * (length - 1);
 

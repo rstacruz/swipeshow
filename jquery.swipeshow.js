@@ -49,6 +49,8 @@
 //
 //  - `.slide`  -- gets `active` when it's the moving one
 //  - `.slides` -- gets `gliding` when it's gliding
+//  - `.slideshow` -- gets `grabbed` when it's touched
+//  - `html` -- gets `swipeshow-grabbed` when grabbing
 //
 // Assumptions it makes:
 //
@@ -203,6 +205,9 @@
       if (c.disabled) return;
       if ($container.is(':animated')) return;
 
+      $container.addClass('grabbed');
+      $('html').addClass('swipeshow-grabbed');
+
       moving = true;
       origin = { x: getX(e) };
       start  = { x: getOffset($container), started: c.isStarted() };
@@ -238,6 +243,10 @@
       if (!moving) return;
 
       var left  = getOffset($container);
+
+      // Set classes
+      $container.removeClass('grabbed');
+      $('html').removeClass('swipeshow-grabbed');
 
       // Account for velocity.
       var delta = getX(e) - origin.x;

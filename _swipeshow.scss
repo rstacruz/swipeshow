@@ -37,9 +37,25 @@
     position: absolute;
     top: 0;
     left: 0;
+
+    cursor: -moz-grab !important;
+    cursor: ew-resize;
   }
 
   .slide {
     float: left;
+  }
+}
+
+// Helper for having a grab cursor.
+// Just use it like so:
+//
+//     @include swipeshow-grab-cursor;
+//
+@mixin swipeshow-grab-cursor {
+  html.swipeshow-grabbed,
+  html.swipeshow-grabbed * {
+    cursor: -moz-grabbing !important;
+    cursor: ew-resize;
   }
 }

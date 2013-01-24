@@ -19,9 +19,16 @@
   width: 99999px;
   position: absolute;
   top: 0;
-  left: 0; }
+  left: 0;
+  cursor: -moz-grab !important;
+  cursor: ew-resize; }
 .slideshow .slide {
   float: left; }
+
+html.swipeshow-grabbed,
+html.swipeshow-grabbed * {
+  cursor: -moz-grabbing !important;
+  cursor: ew-resize; }
 
 /* Extras */
 .slide {

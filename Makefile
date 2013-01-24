@@ -18,7 +18,7 @@ pages/%.js: %.js
 	cp "$<" "$@"
 
 pages/%.html: sample/%.html
-	cat "$<" | sed "s/\.\.\//\.\//g" > "$@"
+	cat "$<" | sed "s/\.\.\///g" > "$@"
 
 pages/%: sample/%
 	cp "$<" "$@"

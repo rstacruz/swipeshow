@@ -1,29 +1,5 @@
 /*! Swipeshow (c) 2013 Rico Sta. Cruz, MIT license. */
 
-(function($) {
-  $.fn.onloadall = function(callback) {
-    var $images = this;
-
-    var images = {
-      loaded: 0,
-      total: $images.length
-    };
-
-    // Wait till all images are loaded...
-    $images.on('load.onloadall', function() {
-      if (++images.loaded >= images.total) { callback.apply($images); }
-    });
-
-    $(function() {
-      $images.each(function() {
-        if (this.complete) $(this).trigger('load.onloadall');
-      });
-    });
-
-    return this;
-  };
-})(jQuery);
-
 // Opinionated, touch-enabled simple slideshow using Cycler.js.
 //
 //     <div class="slideshow">
@@ -63,8 +39,14 @@
 //
 // Classes it adds:
 //
-// - `.slide`  -- gets `active` when it's the moving one
-// - `.slides` -- gets `gliding` when it's gliding
+//  - `.slide`  -- gets `active` when it's the moving one
+//  - `.slides` -- gets `gliding` when it's gliding
+//
+// Assumptions it makes:
+//
+//  - Markup is like above (`.slideshow > .slides > .slide`).
+//  - If there are images inside the slides, it will wait to load them before
+//    starting the slideshow.
 
 (function($) {
   $.fn.swipeshow = function(options) {
@@ -190,11 +172,11 @@
       if (c.disabled) return;
       if ($container.is(':animated')) return;
 
-      c.pause();
-
       moving = true;
       origin = { x: getX(e) };
-      start  = { x: getOffset($container) };
+      start  = { x: getOffset($container), started: c.isStarted() };
+
+      c.pause();
 
       timestart = +new Date();
     });
@@ -239,9 +221,11 @@
       // Switch to that slide.
       c.goTo(index);
 
-      // Restart the slideshow.
       e.preventDefault();
-      c.start();
+
+      // Restart the slideshow if it was already started before.
+      if (start.started) c.start();
+
       moving = false;
     });
 
@@ -256,3 +240,28 @@
       return e.clientX;
   }
 })(jQuery);
+
+(function($) {
+  $.fn.onloadall = function(callback) {
+    var $images = this;
+
+    var images = {
+      loaded: 0,
+      total: $images.length
+    };
+
+    // Wait till all images are loaded...
+    $images.on('load.onloadall', function() {
+      if (++images.loaded >= images.total) { callback.apply($images); }
+    });
+
+    $(function() {
+      $images.each(function() {
+        if (this.complete) $(this).trigger('load.onloadall');
+      });
+    });
+
+    return this;
+  };
+})(jQuery);
+

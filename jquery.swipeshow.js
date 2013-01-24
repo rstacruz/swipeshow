@@ -181,6 +181,7 @@
     var moving = false;
     var origin;
     var start;
+    var delta;
     var timestart;
 
     var width = $slideshow.width();
@@ -219,7 +220,7 @@
       if ($container.is(':animated')) return;
       if (!moving) return;
 
-      var delta = getX(e) - origin.x;
+      delta = getX(e) - origin.x;
       var target = start.x + delta;
       var max = -1 * width * (length - 1);
 
@@ -246,8 +247,6 @@
       $('html').removeClass('swipeshow-grabbed');
 
       // Account for velocity.
-      var delta = getX(e) - origin.x;
-      if (isNaN(delta)) delta = 0;
       var duration = +new Date() - timestart;
       var coef = 9 * Math.max(0, 300 - duration) / 300;
 

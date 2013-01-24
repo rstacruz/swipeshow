@@ -1,7 +1,7 @@
 Swipeshow
 =========
 
-The unassuming touch-enabled JavaScript slideshow. Requires jQuery 1.7.
+The unassuming touch-enabled JavaScript slideshow. Requires jQuery 1.8.
 
  * __Showcase anything.__ You're not limited to images: any markup will do.
  * __Touch-enabled.__ Swipe away on your iPad, iPhone, Android device, or 

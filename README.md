@@ -72,14 +72,16 @@ $(".slideshow").swipeshow();
 Options
 -------
 
+All these options are optional.
+
 ``` js
 $(".slideshow").swipeshow({
-  autostart: true,
-  interval: 3000,     /* Time between movement (ms) */
+  autostart: true,    /* Set to `false` to keep it steady */
+  interval: 3000,     /* Time between switching slides (ms) */
   initial: 0,         /* First slide's index */
   speed: 700,         /* Animation speed (ms) */
-  friction: 0.3,      /* What happens when you swipe out of bounds? */
-  mouse: true,        /* enable mouse dragging controls? */
+  friction: 0.3,      /* Bounce-back behavior; use `0` to disable */
+  mouse: true,        /* enable mouse dragging controls */
 
   onactivate: function(){},
   onpause: function(){},
@@ -130,6 +132,12 @@ $(".slideshow").swipeshow().goTo(2);
 $(".slideshow").swipeshow().pause();
 $(".slideshow").swipeshow().start();
 ```
+
+Cycler
+------
+
+This is powered by Cycler, a very simple library for doing slideshow animations.  
+You can use Cycler without Swipeshow. See it in jquery.swipeshow.js.
 
 License
 -------

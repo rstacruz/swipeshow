@@ -194,7 +194,7 @@
       timestart = +new Date();
     });
 
-    $('body').on('touchmove.swipeshow' + (options.mouse ? ' mousemove.swipeshow' : ''), function(e) {
+    $(document).on('touchmove.swipeshow' + (options.mouse ? ' mousemove.swipeshow' : ''), function(e) {
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;
@@ -214,7 +214,7 @@
       setOffset($container, target, 0);
     });
 
-    $('body').on('touchend.swipeshow' + (options.mouse ? ' mouseup.swipeshow' : ''), function(e) {
+    $(document).on('touchend.swipeshow' + (options.mouse ? ' mouseup.swipeshow' : ''), function(e) {
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;

@@ -214,9 +214,6 @@
       if (c.disabled) return;
       if ($container.is(':animated')) return;
 
-      // Lol
-      if ($(e.target).is('button, a, [data-unswipeable]')) return;
-
       // Add classes.
       $container.addClass('grabbed');
       $('html').addClass('swipeshow-grabbed');

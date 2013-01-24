@@ -246,9 +246,9 @@
       $container.removeClass('grabbed');
       $('html').removeClass('swipeshow-grabbed');
 
-      // Account for velocity.
-      var duration = +new Date() - timestart;
-      var coef = 9 * Math.max(0, 300 - duration) / 300;
+      // Account for velocity... later.
+      // var duration = +new Date() - timestart;
+      // var velocity = delta / (duration / 1000); // Pixels per second 
 
       // Find out what slide it stopped to.
       var index = -1 * Math.round(left / width);

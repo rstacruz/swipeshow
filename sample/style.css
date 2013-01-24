@@ -1,6 +1,6 @@
 .slideshow,
 .slideshow > .slides,
-.slideshow > .slides > .slide {
+.slideshow > * > .slide {
   display: block;
   width: 300px;
   height: 100px;
@@ -20,7 +20,7 @@
   position: absolute;
   top: 0;
   left: 0; }
-.slideshow > .slides > .slide {
+.slideshow > * > .slide {
   float: left; }
 
 /* Extras */

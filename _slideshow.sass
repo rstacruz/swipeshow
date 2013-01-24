@@ -8,7 +8,7 @@
 = horizontal-slideshow($width, $height)
   &,
   > .slides,
-  > .slides > .slide
+  > * > .slide
     display: block
     width: $width
     height: $height
@@ -35,5 +35,5 @@
     top: 0
     left: 0
 
-  > .slides > .slide
+  > * > .slide
     float: left

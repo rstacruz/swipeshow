@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Swipeshow: the unassuming touch-enabled slideshow JavaScript library</title>
+
+    <link href="swipeshow.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="jquery.swipeshow.js"></script>
+    <meta name="viewport" content="width=device-width">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
+    <script>if(location.hostname.match(/ricostacruz\.com$/)){var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-20473929-1"]),_gaq.push(["_trackPageview"]),function(){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)}()}</script>
+</head>
+<body>
+<div class='all'>
+
+  <div class="slideshow">
+    <ul class="slides">
+      <li class="slide">
+        <img src="1.jpg" alt="" />
+      </li>
+      <li class="slide">
+        <img src="2.jpg" alt="" />
+      </li>
+      <li class="slide">
+        <img src="3.jpg" alt="" />
+      </li>
+    </ul>
+  </div>
+
+  <div class='info'>
+    <h1>Swipeshow</h1>
+    <p>
+      Drag it, or swipe it!
+      Best experienced on a touch-enabled device.
+      <a href="https://github.com/rstacruz/swipeshow#readme">See me on Github &rsaquo;</a>
+    </p>
+  </div>
+
+  <div class='info github'>
+    <iframe src="http://ghbtns.com/github-btn.html?user=rstacruz&type=follow&count=true"
+        allowtransparency="true" frameborder="0" scrolling="0" width="165" height="20"></iframe>
+  </div>
+
+  <script>
+    $(".slideshow").swipeshow({ mouse: true });
+  </script>
+  
+</div>
+</body>
+</html>

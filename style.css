@@ -1,0 +1,69 @@
+* { margin: 0; padding: 0; }
+
+body, td, textarea, input {
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+body {
+  background: #fafafa; color: #444; text-shadow: 0 1px 1px rgba(250, 250, 250, 0.2);
+  padding: 0 20px;
+  font-family: Open Sans, sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+}
+
+* {
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  font-smoothing: antialiased !important;
+}
+
+a, a:visited {
+  color: #38a;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #222; }
+
+/* These are optional styles to beautify the slideshow. */
+.slideshow {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
+  background: #555; margin: 0 auto;
+}
+
+.slides {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Github */
+.info {
+  margin: 30px auto;
+  max-width: 280px;
+  text-align: center; }
+
+.info a {
+  margin: 0 3px; }
+
+h1 {
+  margin-bottom: 5px;
+  font-size: 2.0em;
+  font-weight: 300; }
+
+p {
+  color: #888; }
+
+.github iframe {
+  margin: 0 auto; }
+
+html, body {
+  height: 100%; }
+body {
+  width: auto;
+  margin: 0 auto;
+  display: table; }
+.all {
+  padding: 20px;
+  display: table-cell;
+  vertical-align: middle; }

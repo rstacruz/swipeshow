@@ -25,6 +25,7 @@
 //       interval: 3000,     /* Time between movement (ms) */
 //       initial: 0,         /* First slide's index */
 //       speed: 700,         /* Animation speed (ms) */
+//       friction: 0.3,      /* What happens when you swipe out of bounds? */
 //
 //       onactivate: function(){},
 //       onpause: function(){},
@@ -53,7 +54,8 @@
     if (!options) options = {};
 
     options = $.extend({}, {
-      speed: 700
+      speed: 700,
+      friction: 0.3
     }, options);
 
     $(this).each(function() {
@@ -89,7 +91,7 @@
       }
 
       // Bind
-      bindSwipe($slideshow, $container, c);
+      bindSwipe($slideshow, $container, c, options);
 
       // Bind a "next slide" button.
       $slideshow.find('.next').on('click', function(e) {
@@ -147,7 +149,7 @@
   }
 
   // Binds swiping behavior.
-  function bindSwipe($slideshow, $container, c) {
+  function bindSwipe($slideshow, $container, c, options) {
     var moving = false;
     var origin;
     var start;
@@ -155,7 +157,7 @@
 
     var width = $slideshow.width();
     var length = c.list.length;
-    var friction = 0.1;
+    var friction = options.friction;
 
     // Prevent
     $container.find('img').on('mousedown', function(e) {
@@ -191,7 +193,7 @@
       var max = -1 * width * (length - 1);
 
       // Only prevent scrolling when it's moved too far to the right/left
-      if (Math.abs(delta) > 10)
+      if (Math.abs(delta) > 5)
         e.preventDefault();
 
       // Have some friction when scrolling out of bounds.

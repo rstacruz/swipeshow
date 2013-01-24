@@ -42,6 +42,77 @@ a:hover {
   height: 200px;
 }
 
+/* Super slide */
+.link-to-github {
+  position: relative;
+}
+
+.link-to-github img,
+.link-to-github .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.link-to-github img {
+  z-index: 1;
+}
+
+.link-to-github .overlay {
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.6);
+
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.3);
+
+  text-align: center;
+  line-height: 200px;
+}
+
+.link-to-github .in {
+  display: inline-block;
+  vertical-align: middle;
+
+  line-height: 1.5em;
+}
+
+.link-to-github h3 {
+  color: white;
+  font-size: 1.6em;
+  font-weight: 400;
+}
+
+.link-to-github p {
+  margin-bottom: 20px;
+  color: #ddd;
+}
+
+.link-to-github a {
+  display: inline-block;
+  padding: 3px 20px;
+  border: solid 2px #ddd;
+
+  text-transform: uppercase;
+  font-weight: bold;
+
+  color: white;
+  border-radius: 20px;
+}
+
+.link-to-github a:hover {
+  background-color: #ddd;
+  color: #222;
+  text-shadow: none;
+}
+
+.link-to-github a:active {
+  background-color: #37a;
+  border-color: #37a;
+  color: #fff;
+  text-shadow: none;
+}
+
 /* Github */
 .info {
   margin: 30px auto;

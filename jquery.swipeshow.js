@@ -140,8 +140,8 @@
     return $(this).data('swipeshow');
   };
 
-  // Use transitions?
-  var transitions = true;
+  // Detect transition support, jQuery 1.8+ style.
+  var transitions = !! $("<div>").css({transition: 'all'}).css('transition');
 
   var offsetTimer;
 

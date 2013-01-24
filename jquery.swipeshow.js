@@ -13,7 +13,7 @@
 //       <button class="next"></button>
 //       <button class="previous"></button>
 //
-//       <!-- optional pegs: -->
+//       <!-- optional pegs: (not implemented yet) -->
 //       <ul class='pegs'>
 //         <li class='peg'><button></button></li> <!-- populated manually -->
 //       </ul>
@@ -31,6 +31,7 @@
 //       initial: 0,         /* First slide's index */
 //       speed: 700,         /* Animation speed (ms) */
 //       friction: 0.3,      /* What happens when you swipe out of bounds? */
+//       mouse: false,       /* enable mouse dragging controls */
 //
 //       onactivate: function(){},
 //       onpause: function(){},
@@ -61,7 +62,8 @@
 
     options = $.extend({}, {
       speed: 700,
-      friction: 0.3
+      friction: 0.3,
+      mouse: false
     }, options);
 
     $(this).each(function() {
@@ -173,7 +175,7 @@
       e.preventDefault();
     });
 
-    $container.on('mousedown touchstart', function(e) {
+    $container.on('touchstart.swipeshow' + (options.mouse ? ' mousedown.swipeshow' : ''), function(e) {
       // Only prevent mouse clicks. This allows vertical scrolling on mobile.
       // Do this before the sanity checks... you don't want the user to
       // accidentally drag the <img>.
@@ -192,7 +194,7 @@
       timestart = +new Date();
     });
 
-    $('body').on('mousemove touchmove', function(e) {
+    $('body').on('touchmove.swipeshow' + (options.mouse ? ' mousemove.swipeshow' : ''), function(e) {
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;
@@ -212,7 +214,7 @@
       setOffset($container, target, 0);
     });
 
-    $('body').on('mouseup touchend', function(e) {
+    $('body').on('touchend.swipeshow' + (options.mouse ? ' mouseup.swipeshow' : ''), function(e) {
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;

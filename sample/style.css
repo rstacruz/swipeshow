@@ -17,3 +17,8 @@
   left: 0; }
 .slideshow > .slides > .slide {
   float: left; }
+
+.slide {
+  opacity: 0.3; }
+.slide.active {
+  opacity: 1; }

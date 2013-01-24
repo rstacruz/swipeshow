@@ -60,6 +60,11 @@
 //
 //     $(".slideshow").data('slideshow').pause();
 //     $(".slideshow").data('slideshow').start();
+//
+// Classes it adds:
+//
+//     .slide  -- gets `active` when it's the moving one
+//     .slides -- gets `gliding` when it's gliding
 
 (function($) {
   $.fn.swipeshow = function(options) {
@@ -80,6 +85,12 @@
       var c = new Cycler($slides, $.extend({}, options, {
         onactivate: function(current, i, prev, j) {
           if (options.onactivate) options.onactivate(current, i, prev, j);
+
+          // Set classes
+          if (prev) $(prev).removeClass('active');
+          if (current) $(current).addClass('active');
+
+          // Move
           setOffset($container, -1 * width * i, options.speed);
         }
       }));
@@ -138,13 +149,13 @@
       }
     }
 
-    $el.addClass('animating');
+    $el.addClass('gliding');
 
     if (typeof offsetTimer === 'undefined')
       clearTimeout(offsetTimer);
 
     offsetTimer = setTimeout(function() {
-      $el.removeClass('animating');
+      $el.removeClass('gliding');
       offsetTimer = undefined;
     }, speed);
   }
@@ -177,7 +188,7 @@
         e.preventDefault();
 
       if (c.disabled) return;
-      if ($container.is(':animated')) return;
+      if ($container.is(':animated') || $container.is('.gliding')) return;
 
       c.pause();
 
@@ -190,7 +201,7 @@
 
     $('body').on('mousemove touchmove', function(e) {
       if (c.disabled) return;
-      if ($container.is(':animated')) return;
+      if ($container.is(':animated') || $container.is('.gliding')) return;
       if (!moving) return;
 
       var delta = getX(e) - origin.x;
@@ -210,7 +221,7 @@
 
     $('body').on('mouseup touchend', function(e) {
       if (c.disabled) return;
-      if ($container.is(':animated')) return;
+      if ($container.is(':animated') || $container.is('.gliding')) return;
       if (!moving) return;
 
       var left  = getOffset($container);

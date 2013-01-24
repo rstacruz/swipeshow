@@ -57,6 +57,9 @@
 
   $.swipeshow.version = "0.9.0";
 
+  // Detect transition support, jQuery 1.8+ style.
+  var transitions = !! $("<div>").css({transition: 'all'}).css('transition');
+
   $.fn.swipeshow = function(options) {
     // Idempotency:
     if ($(this).data('swipeshow'))
@@ -65,7 +68,8 @@
     if (!options) options = {};
 
     options = $.extend({}, {
-      speed: 700,
+      speed: 1600,
+      interval: 2100,
       friction: 0.3,
       mouse: true
     }, options);
@@ -140,9 +144,6 @@
     return $(this).data('swipeshow');
   };
 
-  // Detect transition support, jQuery 1.8+ style.
-  var transitions = !! $("<div>").css({transition: 'all'}).css('transition');
-
   var offsetTimer;
 
   function setOffset($el, left, speed) {
@@ -172,7 +173,18 @@
     }, speed);
   }
 
+  // Find the X offset of the container ('.slides').
+  // Attempt to parse it out of "matrix(1, 0, 0, 1, -200, 0)", otherwise resort to stored data.
   function getOffset($el) {
+    var offset = null;
+    if (transitions) {
+      var matrix = $el.css('transform');
+      var m = matrix.replace(/ /g,'').match(/matrix\((?:[\-\.\d+]+,){4}([\-\.\d+]+)/);
+      if (m[1]) {
+        return +m[1];
+      }
+    }
+
     return $el.data('swipeshow:left') || 0;
   }
 
@@ -203,6 +215,7 @@
       if (c.disabled) return;
       if ($container.is(':animated')) return;
 
+      // Add classes.
       $container.addClass('grabbed');
       $('html').addClass('swipeshow-grabbed');
 
@@ -212,13 +225,21 @@
       delta  = 0;
       lastTouch = null;
 
-      c.pause();
+      // Freeze the current offset.
+      // Not really perfect.
+      if (transitions) {
+        $container.css({ transform: $container.css('transform'), transition: 'none' });
+      }
+
+      // Pause the slideshow, but resume it later.
+      if (start.started) c.pause();
     });
 
     $(document).on('touchmove.swipeshow' + (options.mouse ? ' mousemove.swipeshow' : ''), function(e) {
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;
+      return;
 
       // X can sometimes be NaN because the touch event may not have any X/Y info.
       var x = getX(e);
@@ -254,10 +275,6 @@
       // Set classes
       $container.removeClass('grabbed');
       $('html').removeClass('swipeshow-grabbed');
-
-      // Account for velocity... later.
-      // var duration = +new Date() - timestart;
-      // var velocity = delta / (duration / 1000); // Pixels per second 
 
       // Find out what slide it stopped to.
       var index = -1 * Math.round(left / width);

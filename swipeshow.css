@@ -7,11 +7,13 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  /* Prevent flickers */
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  /* In case you add padding */
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -26,7 +28,11 @@
   top: 0;
   left: 0; }
 .slideshow .slide {
-  float: left; }
+  float: left;
+  -webkit-user-select: none;
+  /* iOS: disable text select */
+  -webkit-touch-callout: none;
+  /* iOS: disable callout, image save panel (popup) */ }
 .slideshow .slides {
   cursor: -moz-grab !important;
   cursor: ew-resize; }

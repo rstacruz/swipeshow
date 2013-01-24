@@ -5,6 +5,7 @@ all: \
 	pages \
 	pages/index.html \
 	pages/style.css \
+	pages/swipeshow.css \
 	pages/jquery.swipeshow.js \
 	pages/1.jpg \
 	pages/2.jpg \
@@ -22,7 +23,7 @@ pages/%.html: sample/%.html
 pages/%: sample/%
 	cp "$<" "$@"
 
-sample/style.css: sample/style.sass _swipeshow.scss
+sample/swipeshow.css: sample/swipeshow.sass _swipeshow.scss
 	sass "$<" > "$@"
 
 .PHONY: server

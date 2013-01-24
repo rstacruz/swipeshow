@@ -1,0 +1,35 @@
+.slideshow,
+.slideshow .slides,
+.slideshow .slide {
+  display: block;
+  width: 200px;
+  height: 200px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+.slideshow {
+  overflow: hidden;
+  position: relative; }
+.slideshow .slides {
+  width: 99999px;
+  position: absolute;
+  top: 0;
+  left: 0; }
+.slideshow .slide {
+  float: left; }
+
+/* Extras */
+.slide {
+  -webkit-backface-visibility: hidden;
+  -webkit-transition: opacity 300ms linear;
+  -moz-transition: opacity 300ms linear;
+  transition: opacity 300ms linear;
+  opacity: 0.8; }
+
+.slide.active {
+  opacity: 0.999; }

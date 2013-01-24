@@ -1,35 +1,51 @@
-.slideshow,
-.slideshow .slides,
-.slideshow .slide {
-  display: block;
-  width: 200px;
-  height: 200px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0); }
+* { margin: 0; padding: 0; }
+
+body, td, textarea, input {
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+body {
+  background: #fafafa; color: #444; text-shadow: 0 1px 1px rgba(250, 250, 250, 0.2);
+  margin: 20px auto;
+  padding: 0 20px;
+  font-family: Open Sans, sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+}
+
+* {
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  font-smoothing: antialiased !important;
+}
+
+a, a:visited {
+  color: #38a;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #222; }
+
+/* These are optional styles to beautify the slideshow. */
 .slideshow {
-  overflow: hidden;
-  position: relative; }
-.slideshow .slides {
-  width: 99999px;
-  position: absolute;
-  top: 0;
-  left: 0; }
-.slideshow .slide {
-  float: left; }
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.4);
+  background: #555; margin: 0 auto;
+}
 
-/* Extras */
-.slide {
-  -webkit-backface-visibility: hidden;
-  -webkit-transition: opacity 300ms linear;
-  -moz-transition: opacity 300ms linear;
-  transition: opacity 300ms linear;
-  opacity: 0.8; }
+.slides {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
 
-.slide.active {
-  opacity: 0.999; }
+/* Github */
+.info {
+  margin: 30px auto;
+  max-width: 280px;
+  text-align: center; }
+
+h1 {
+  font-size: 1.8em;
+  font-weight: 300; }
+p {
+  color: #888; }

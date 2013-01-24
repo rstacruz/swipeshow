@@ -1,6 +1,6 @@
 .slideshow,
-.slideshow > .slides,
-.slideshow > * > .slide {
+.slideshow .slides,
+.slideshow .slide {
   display: block;
   width: 300px;
   height: 100px;
@@ -15,12 +15,12 @@
 .slideshow {
   overflow: hidden;
   position: relative; }
-.slideshow > .slides {
+.slideshow .slides {
   width: 99999px;
   position: absolute;
   top: 0;
   left: 0; }
-.slideshow > * > .slide {
+.slideshow .slide {
   float: left; }
 
 /* Extras */

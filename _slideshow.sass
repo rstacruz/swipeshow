@@ -7,8 +7,8 @@
 //
 = horizontal-slideshow($width, $height)
   &,
-  > .slides,
-  > * > .slide
+  .slides,
+  .slide
     display: block
     width: $width
     height: $height
@@ -28,12 +28,12 @@
     overflow: hidden
     position: relative
 
-  > .slides
+  .slides
     width: 99999px
 
     position: absolute
     top: 0
     left: 0
 
-  > * > .slide
+  .slide
     float: left

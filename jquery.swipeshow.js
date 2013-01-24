@@ -239,7 +239,6 @@
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;
-      return;
 
       // X can sometimes be NaN because the touch event may not have any X/Y info.
       var x = getX(e);

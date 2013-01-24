@@ -2,8 +2,8 @@
 .slideshow .slides,
 .slideshow .slide {
   display: block;
-  width: 300px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -29,7 +29,7 @@
   -webkit-transition: opacity 300ms linear;
   -moz-transition: opacity 300ms linear;
   transition: opacity 300ms linear;
-  opacity: 0.3; }
+  opacity: 0.8; }
 
 .slide.active {
   opacity: 0.999; }

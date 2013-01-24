@@ -12,6 +12,11 @@
 //       <!-- optional controls: -->
 //       <button class="next"></button>
 //       <button class="previous"></button>
+//
+//       <!-- optional pegs: -->
+//       <ul class='pegs'>
+//         <li class='peg'><button></button></li> <!-- populated manually -->
+//       </ul>
 //     </div>
 //
 // To use:
@@ -46,6 +51,7 @@
 // Assumptions it makes:
 //
 //  - Markup is like above (`.slideshow > .slides > .slide`).
+//  - Buttons are optional, and will be found in `.slideshow > .next` (and `.previous`)
 //  - If there are images inside the slides, it will wait to load them before
 //    starting the slideshow.
 
@@ -78,6 +84,9 @@
           setOffset($container, -1 * width * i, options.speed);
         }
       }));
+
+      // Auto-size the container.
+      $container.css({ width: width * $slides.length });
 
       // Defer starting until images are loaded.
       if (options.autostart !== false) {

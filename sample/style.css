@@ -7,7 +7,6 @@ body, td, textarea, input {
 
 body {
   background: #fafafa; color: #444; text-shadow: 0 1px 1px rgba(250, 250, 250, 0.2);
-  margin: 20px auto;
   padding: 0 20px;
   font-family: Open Sans, sans-serif;
   font-size: 10pt;
@@ -30,7 +29,7 @@ a:hover {
 
 /* These are optional styles to beautify the slideshow. */
 .slideshow {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
   background: #555; margin: 0 auto;
 }
 
@@ -45,7 +44,22 @@ a:hover {
   text-align: center; }
 
 h1 {
-  font-size: 1.8em;
+  font-size: 2.0em;
   font-weight: 300; }
+
 p {
   color: #888; }
+
+.github iframe {
+  margin: 0 auto; }
+
+html, body {
+  height: 100%; }
+body {
+  width: auto;
+  margin: 0 auto;
+  display: table; }
+.all {
+  padding: 20px;
+  display: table-cell;
+  vertical-align: middle; }

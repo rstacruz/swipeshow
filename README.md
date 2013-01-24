@@ -9,6 +9,9 @@ The unassuming touch-enabled JavaScript slideshow. Requires jQuery 1.7.
  * __Style-it-yourself.__ The default CSS has nothing in it except laying out 
  your slides side-by-side. You'd be in charge of figuring out how to add borders 
  or anything else you like.
+ * __Hardware-accelerated.__ Animations are done via CSS transitions, which will
+ render smoothly on mobile devices. It will automatically fall back to
+ frame-by-frame animation when transitions aren't available.
 
 How to use
 ----------

@@ -194,6 +194,7 @@
     var start;
     var delta;
     var lastTouch;
+    var minDelta; // Minimum change for it to take effect.
 
     var width = $slideshow.width();
     var length = c.list.length;
@@ -214,6 +215,13 @@
       if (c.disabled) return;
       if ($container.is(':animated')) return;
 
+      // Make some elements hard to swipe from.
+      if ($(e.target).is('button, a, [data-tappable]')) {
+        minDelta = 100;
+      } else {
+        minDelta = 0;
+      }
+
       // Add classes.
       $container.addClass('grabbed');
       $('html').addClass('swipeshow-grabbed');
@@ -224,9 +232,11 @@
       delta  = 0;
       lastTouch = null;
 
-      // Freeze the current offset.
-      // Not really perfect.
-      if (transitions) {
+      // Freeze the current offset. Not really perfect -- it will not stop at
+      // the precise offset, causing some 'flickery' behavior. (Also, let's
+      // check for minDelta == 0 so that we don't 'freeze' while tapping on a
+      // button, since there'll be that flickery thing...)
+      if (transitions && minDelta === 0) {
         $container.css({ transform: $container.css('transform'), transition: 'none' });
       }
 
@@ -244,6 +254,9 @@
       if (isNaN(x)) return;
 
       delta = x - origin.x;
+
+      // When swiping was triggered on a button, it should be harder to swipe from.
+      if (Math.abs(delta) <= minDelta) delta = 0;
 
       var target = start.x + delta;
       var max = -1 * width * (length - 1);

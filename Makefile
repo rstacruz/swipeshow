@@ -4,6 +4,11 @@ all: \
 	jquery.swipeshow.min.js \
 	sample/style.css \
 	pages \
+
+%.min.js: %.js
+	uglifyjs "$<" > "$@"
+
+pages: \
 	pages/index.html \
 	pages/style.css \
 	pages/swipeshow.css \
@@ -12,16 +17,14 @@ all: \
 	pages/2.jpg \
 	pages/3.jpg \
 
-%.min.js: %.js
-	uglifyjs "$<" > "$@"
-
-pages:
-	mkdir -p pages
+%/:
+	mkdir -p "$@"
 
 pages/%.js: %.js
 	cp "$<" "$@"
 
 pages/%.html: sample/%.html
+	mkdir -p pages
 	cat "$<" | sed "s/\.\.\///g" > "$@"
 
 pages/%: sample/%

@@ -10,16 +10,24 @@ The unassuming touch-enabled JavaScript slideshow. Requires jQuery 1.7.
  your slides side-by-side. You'd be in charge of figuring out how to add borders 
  or anything else you like.
 
-Markup
-------
+How to use
+----------
 
-### JavaScript
+### How to use
+
+Follow the HTML markup guide (see below), then use the sample CSS (also listed
+below). Then just fire away:
 
 ``` js
-$(".slideshow").swipeshow();
+$(function() {
+  $(".slideshow").swipeshow();
+});
 ```
 
 ### HTML
+
+Swipeshow goes by the assumption  that your slideshow element looks like `.slides > .slide`. You
+are free to put whatever you want inside `.slide`, or even `.slides`!
 
 ``` html
 <div class="slideshow">
@@ -32,6 +40,13 @@ $(".slideshow").swipeshow();
 ```
 
 ### CSS
+
+Here's the bare-bone CSS to make Swipeshow work. Notice that all it does is lay
+out your `.slides` side-by-side; you'll be in charge of actually styling them
+nicely.
+
+By the way, there are [Sass helpers][#sass-helpers] that can make this easier
+for you.
 
 ``` css
 .slideshow,
@@ -146,8 +161,8 @@ style more stuff via CSS.
  - `.slide`  -- gets the `active` class when it's the selected one.
  - `<html>` -- gets the `swipeshow-grabbed` class when grabbing.
 
-Sass integration
-----------------
+Sass helpers
+------------
 
 There are quick Sass mixins for use with Swipeshow: [swipeshow.scss].
 

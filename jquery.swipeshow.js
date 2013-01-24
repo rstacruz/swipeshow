@@ -12,18 +12,13 @@
 //       <!-- optional controls: -->
 //       <button class="next"></button>
 //       <button class="previous"></button>
-//
-//       <!-- optional pegs: (not implemented yet) -->
-//       <ul class='pegs'>
-//         <li class='peg'><button></button></li> <!-- populated manually -->
-//       </ul>
 //     </div>
 //
 // To use:
 //
 //     $(".slideshow").swipeshow();
 //
-// Options:
+// Options (all of these are optional)
 //
 //     $(".slideshow").swipeshow({
 //       autostart: true,
@@ -35,6 +30,12 @@
 //
 //       onactivate: function(){},
 //       onpause: function(){},
+//
+//       $next:     $("button.next"),
+//       $previous: $("button.previous"),
+//
+//       // Not implemented yet:
+//       $pegs:     $("ul.pegs")
 //     });
 //
 //     $(".slideshow").swipeshow().next();
@@ -52,7 +53,7 @@
 // Assumptions it makes:
 //
 //  - Markup is like above (`.slideshow > .slides > .slide`).
-//  - Buttons are optional, and will be found in `.slideshow > .next` (and `.previous`)
+//  - Buttons (optional), by default, will be found in `.slideshow > .next` (and `.previous`)
 //  - If there are images inside the slides, it will wait to load them before
 //    starting the slideshow.
 
@@ -109,13 +110,15 @@
       bindSwipe($slideshow, $container, c, options);
 
       // Bind a "next slide" button.
-      $slideshow.find('.next').on('click', function(e) {
+      var $next = options.$next || $slideshow.find('.next');
+      $next.on('click', function(e) {
         e.preventDefault();
         if (!c.disabled) c.next();
       });
 
       // Bind a "previous slide" button.
-      $slideshow.find('.previous').on('click', function(e) {
+      var $previous = options.$previous || $slideshow.find('.previous');
+      $previous.on('click', function(e) {
         e.preventDefault();
         if (!c.disabled) c.previous();
       });

@@ -18,14 +18,14 @@
     padding: 0;
     list-style: none;
 
-    // Prevent flickers
+    /* Prevent flickers */
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
     -o-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 
-    // In case you add padding
+    /* In case you add padding */
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
@@ -48,6 +48,8 @@
 
   .slide {
     float: left;
+    -webkit-user-select: none;   /* iOS: disable text select */
+    -webkit-touch-callout: none; /* iOS: disable callout, image save panel (popup) */
   }
 
   @if $cursor == true {

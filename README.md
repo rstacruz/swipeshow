@@ -91,6 +91,9 @@ for you.
 
 .slideshow .slide {
   float: left;
+
+  -webkit-user-select: none;   /* iOS: disable text select */
+  -webkit-touch-callout: none; /* iOS: disable callout, image save panel (popup) */
 }
 ```
 

@@ -133,6 +133,36 @@ $(".slideshow").swipeshow().pause();
 $(".slideshow").swipeshow().start();
 ```
 
+Magic classes
+-------------
+
+Your markup gets additional CSS classes depending on things. This allows you to 
+style more stuff via CSS.
+
+ - `.slideshow` - gets the `touch` class when touch is on, or `no-touch` on 
+ desktops.
+ - `.slides` - gets the `gliding` class when it's gliding.
+ - `.slides` -- gets the `grabbed` class when it's currently being dragged.
+ - `.slide`  -- gets the `active` class when it's the selected one.
+ - `<html>` -- gets the `swipeshow-grabbed` class when grabbing.
+
+Sass integration
+----------------
+
+There are quick Sass mixins for use with Swipeshow: [swipeshow.scss].
+
+``` css
+@import 'swipeshow';
+
+.slideshow {
+  @include swipeshow(200px, 200px);
+}
+
+@include swipeshow-grab-cursor;
+```
+
+[swipeshow.scss]: https://github.com/rstacruz/swipeshow/blob/master/_swipeshow.scss
+
 Cycler
 ------
 

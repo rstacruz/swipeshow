@@ -45,13 +45,6 @@
 //     $(".slideshow").swipeshow().pause();
 //     $(".slideshow").swipeshow().start();
 //
-// Classes it adds:
-//
-//  - `.slide`  -- gets `active` when it's the moving one
-//  - `.slides` -- gets `gliding` when it's gliding
-//  - `.slideshow` -- gets `grabbed` when it's touched
-//  - `html` -- gets `swipeshow-grabbed` when grabbing
-//
 // Assumptions it makes:
 //
 //  - Markup is like above (`.slideshow > .slides > .slide`).
@@ -100,6 +93,10 @@
 
       // Auto-size the container.
       $container.css({ width: width * $slides.length });
+
+      // Add classes.
+      $slideshow.addClass(
+        ('ontouchstart' in document.documentElement) ? 'touch' : 'no-touch');
 
       // Defer starting until images are loaded.
       if (options.autostart !== false) {

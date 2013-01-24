@@ -19,11 +19,12 @@
   width: 99999px;
   position: absolute;
   top: 0;
-  left: 0;
-  cursor: -moz-grab !important;
-  cursor: ew-resize; }
+  left: 0; }
 .slideshow .slide {
   float: left; }
+.slideshow .slides {
+  cursor: -moz-grab !important;
+  cursor: ew-resize; }
 
 html.swipeshow-grabbed,
 html.swipeshow-grabbed * {

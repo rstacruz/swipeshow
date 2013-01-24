@@ -6,7 +6,7 @@
 //       @include swipeshow(200px, 150px);
 //     }
 //
-@mixin swipeshow($width, $height) {
+@mixin swipeshow($width, $height, $cursor: true) {
   &,
   .slides,
   .slide {
@@ -37,13 +37,17 @@
     position: absolute;
     top: 0;
     left: 0;
-
-    cursor: -moz-grab !important;
-    cursor: ew-resize;
   }
 
   .slide {
     float: left;
+  }
+
+  @if $cursor == true {
+    .slides {
+      cursor: -moz-grab !important;
+      cursor: ew-resize;
+    }
   }
 }
 

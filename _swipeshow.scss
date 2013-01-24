@@ -1,0 +1,44 @@
+//
+//     <div class="slideshow">
+//       <ul class="slides">
+//         <li class="slide">...</li>
+//       </ul>
+//     </div>
+//
+@mixin swipeshow($width, $height) {
+  &,
+  .slides,
+  .slide {
+    display: block;
+    width: $width;
+    height: $height;
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    // Prevent flickers
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  & {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slides {
+    width: 99999px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .slide {
+    float: left;
+  }
+}

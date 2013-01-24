@@ -22,7 +22,7 @@ pages/%.html: sample/%.html
 pages/%: sample/%
 	cp "$<" "$@"
 
-sample/style.css: sample/style.sass _slideshow.sass
+sample/style.css: sample/style.sass _swipeshow.scss
 	sass "$<" > "$@"
 
 .PHONY: server

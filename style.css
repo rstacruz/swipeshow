@@ -62,7 +62,7 @@ a:hover {
 
 .link-to-github .overlay {
   z-index: 2;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 10, 60, 0.75);
 
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.3);
 
@@ -73,19 +73,21 @@ a:hover {
 .link-to-github .in {
   display: inline-block;
   vertical-align: middle;
+  padding: 0 20px;
 
-  line-height: 1.5em;
+  line-height: 1.4em;
 }
 
 .link-to-github h3 {
   color: white;
   font-size: 1.6em;
   font-weight: 400;
+  margin-bottom: 3px;
 }
 
 .link-to-github p {
   margin-bottom: 20px;
-  color: #ddd;
+  color: #d0d0dd;
 }
 
 .link-to-github a {

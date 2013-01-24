@@ -68,7 +68,7 @@
     if (!options) options = {};
 
     options = $.extend({}, {
-      speed: 600,
+      speed: 400,
       friction: 0.3,
       mouse: true
     }, options);

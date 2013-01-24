@@ -45,7 +45,7 @@ Here's the bare-bone CSS to make Swipeshow work. Notice that all it does is lay
 out your `.slides` side-by-side; you'll be in charge of actually styling them
 nicely.
 
-By the way, there are [Sass helpers][#sass-helpers] that can make this easier
+By the way, there are [Sass helpers](#sass-helpers) that can make this easier
 for you.
 
 ``` css

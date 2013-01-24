@@ -223,7 +223,9 @@
 
       // X can sometimes be NaN because the touch event may not have any X/Y info.
       var x = getX(e);
-      if (!isNaN(x)) delta = x - origin.x;
+      if (isNaN(x)) return;
+
+      delta = x - origin.x;
 
       var target = start.x + delta;
       var max = -1 * width * (length - 1);

@@ -19,18 +19,13 @@ How to use
 ### How to use
 
 Follow the HTML markup guide (see below), then use the sample CSS (also listed
-below). Then just fire away:
+below). Then just fire `$('...').swipeshow()`.
 
-``` js
-$(function() {
-  $(".slideshow").swipeshow();
-});
-```
+### HTML markup
 
-### HTML
-
-Swipeshow goes by the assumption  that your slideshow element looks like `.slides > .slide`. You
-are free to put whatever you want inside `.slide`, or even `.slideshow`!
+Swipeshow goes by the assumption that your slideshow element looks like `.slides
+> .slide`. You are free to put whatever you want inside `.slide`, or even
+`.slideshow`!
 
 ``` html
 <div class="slideshow">
@@ -95,6 +90,16 @@ for you.
   -webkit-user-select: none;   /* iOS: disable text select */
   -webkit-touch-callout: none; /* iOS: disable callout, image save panel (popup) */
 }
+```
+
+### JavaScript
+
+...and that's it!
+
+``` js
+$(function() {
+  $(".slideshow").swipeshow();
+});
 ```
 
 Options

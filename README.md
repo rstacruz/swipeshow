@@ -181,8 +181,16 @@ There are quick Sass mixins for use with Swipeshow: [swipeshow.scss].
 Cycler
 ------
 
-This is powered by Cycler, a very simple library for doing slideshow animations.  
-You can use Cycler without Swipeshow. See it in jquery.swipeshow.js.
+Need more control over your slideshow? Use Cycler: a very simple library for
+doing slideshow animations bundled with swipeshow.
+
+It lets you define all behavior yourself and just provides you a model-like
+interface to manage the slides and timers.
+
+See it somewhere in the middle [jquery.swipeshow.js]: documentation is there as
+inline comments.
+
+[jquery.swipeshow.js]: https://github.com/rstacruz/swipeshow/blob/master/jquery.swipeshow.js
 
 License
 -------

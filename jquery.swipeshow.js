@@ -182,7 +182,7 @@
     var origin;
     var start;
     var delta;
-    var timestart;
+    var lastTouch;
 
     var width = $slideshow.width();
     var length = c.list.length;
@@ -210,10 +210,9 @@
       origin = { x: getX(e) };
       start  = { x: getOffset($container), started: c.isStarted() };
       delta  = 0;
+      lastTouch = null;
 
       c.pause();
-
-      timestart = +new Date();
     });
 
     $(document).on('touchmove.swipeshow' + (options.mouse ? ' mousemove.swipeshow' : ''), function(e) {
@@ -231,13 +230,17 @@
       var max = -1 * width * (length - 1);
 
       // Only prevent scrolling when it's moved too far to the right/left
-      if (Math.abs(delta) > 5)
+      if (Math.abs(delta) > 2)
         e.preventDefault();
 
       // Have some friction when scrolling out of bounds.
       if (target > 0) target *= friction;
       if (target < max) target = max + (target - max) * friction;
 
+      // Record when it was last touched, so that when the finger is lifted, we
+      // know how long it's been since
+      lastTouch = +new Date();
+      
       setOffset($container, target, 0);
     });
 
@@ -258,6 +261,19 @@
 
       // Find out what slide it stopped to.
       var index = -1 * Math.round(left / width);
+
+      // If the finger moved, but not enough to advance...
+      if (lastTouch && c.current === index) {
+        var timeDelta = +new Date() - lastTouch;
+
+        // If distance is far enough, and time is short enough.
+        // I just winged these magic numbers trying to compare the experience to iOS's Photo app.
+        if (Math.abs(delta) > 10 && timeDelta < 20) {
+          var sign = delta < 0 ? -1 : 1;
+          index -= sign;
+        }
+      }
+
       if (index < 0) index = 0;
       if (index > c.list.length-1) index = c.list.length-1;
 
@@ -269,6 +285,7 @@
       // Restart the slideshow if it was already started before.
       if (start.started) c.start();
 
+      // Reset.
       moving = false;
     });
 

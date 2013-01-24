@@ -31,18 +31,18 @@
 //       initial: 0,         /* First slide's index */
 //       speed: 700,         /* Animation speed (ms) */
 //       friction: 0.3,      /* What happens when you swipe out of bounds? */
-//       mouse: false,       /* enable mouse dragging controls */
+//       mouse: true,        /* enable mouse dragging controls? */
 //
 //       onactivate: function(){},
 //       onpause: function(){},
 //     });
 //
-//     $(".slideshow").data('slideshow').next();
-//     $(".slideshow").data('slideshow').previous();
-//     $(".slideshow").data('slideshow').goTo(2);
+//     $(".slideshow").swipeshow().next();
+//     $(".slideshow").swipeshow().previous();
+//     $(".slideshow").swipeshow().goTo(2);
 //
-//     $(".slideshow").data('slideshow').pause();
-//     $(".slideshow").data('slideshow').start();
+//     $(".slideshow").swipeshow().pause();
+//     $(".slideshow").swipeshow().start();
 //
 // Classes it adds:
 //
@@ -58,12 +58,16 @@
 
 (function($) {
   $.fn.swipeshow = function(options) {
+    // Idempotency:
+    if ($(this).data('swipeshow'))
+      return $(this).data('swipeshow');
+
     if (!options) options = {};
 
     options = $.extend({}, {
       speed: 700,
       friction: 0.3,
-      mouse: false
+      mouse: true
     }, options);
 
     $(this).each(function() {
@@ -117,10 +121,10 @@
       });
 
       // Save the cycler for future use.
-      $slideshow.data('slideshow', c);
+      $slideshow.data('swipeshow', c);
     });
 
-    return this;
+    return $(this).data('swipeshow');
   };
 
   // Use transitions?

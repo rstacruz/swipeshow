@@ -33,7 +33,7 @@
   /* iOS: disable text select */
   -webkit-touch-callout: none;
   /* iOS: disable callout, image save panel (popup) */ }
-.slideshow .slides {
+.slideshow.swipeshow-active .slides {
   cursor: -moz-grab !important;
   cursor: ew-resize; }
 

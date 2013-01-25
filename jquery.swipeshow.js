@@ -60,11 +60,10 @@
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
 
-  $.fn.swipeshow = function(options) {
-    // Idempotency:
-    if ($(this).data('swipeshow'))
-      return $(this).data('swipeshow');
+  // Count instances.
+  var instances = 0;
 
+  $.fn.swipeshow = function(options) {
     if (!options) options = {};
 
     options = $.extend({}, {
@@ -77,6 +76,12 @@
       var $slideshow = $(this);
       var $container = $slideshow.find('> .slides');
       var $slides    = $container.find('> .slide');
+
+      // Idempotency: don't do anything if it's already been initialized.
+      if ($slideshow.data('swipeshow')) {
+        console.log('lready initilaized');
+        return;
+      }
 
       var width = $slideshow.width();
 
@@ -143,8 +148,36 @@
     return $(this).data('swipeshow');
   };
 
+  // Unbinds everything.
+  $.fn.unswipeshow = function() {
+    this.each(function() {
+      var $slideshow = $(this);
+      var $container = $slideshow.find('> .slides');
+
+      var c = $slideshow.data('swipeshow');
+      var tag = $slideshow.data('swipeshow:tag');
+
+      if (c) {
+        // Kill the timer.
+        c.pause();
+
+        // Unbind the events based on their tag (eg, `swipeshow-1`).
+        $container.find('img').off(tag);
+        $container.off(tag);
+        $(document).off(tag);
+
+        // Unregister so that it can be initialized again later.
+        $slideshow.data('swipeshow', null);
+      }
+    });
+
+    return this;
+  };
+
   var offsetTimer;
 
+  // Sets the X offset of the given element `$el` (usually `.slides`).
+  // `speed` is in milliseconds. If `speed` is `0`, it happens instantly.
   function setOffset($el, left, speed) {
     $el.data('swipeshow:left', left);
     if (transitions) {
@@ -161,6 +194,7 @@
       }
     }
 
+    // Add the class to the `.slides` so it can be styled appropriately if needed.
     $el.addClass('gliding');
 
     if (typeof offsetTimer === 'undefined')
@@ -193,12 +227,18 @@
     var length = c.list.length;
     var friction = options.friction;
 
-    // Prevent
-    $container.find('img').on('mousedown', function(e) {
+    // Tags for the events (so they can be unbound later)
+    var tag = '.swipeshow.swipeshow-'+(++instances);
+
+    // Store the tag so it can be unbound later.
+    $slideshow.data('swipeshow:tag', tag);
+
+    // Prevent dragging of the image.
+    $container.find('img').on('mousedown'+tag, function(e) {
       e.preventDefault();
     });
 
-    $container.on('touchstart.swipeshow' + (options.mouse ? ' mousedown.swipeshow' : ''), function(e) {
+    $container.on('touchstart'+tag + (options.mouse ? ' mousedown'+tag : ''), function(e) {
       // Only prevent mouse clicks. This allows vertical scrolling on mobile.
       // Do this before the sanity checks... you don't want the user to
       // accidentally drag the <img>.
@@ -229,7 +269,7 @@
       if (start.started) c.pause();
     });
 
-    $(document).on('touchmove.swipeshow' + (options.mouse ? ' mousemove.swipeshow' : ''), function(e) {
+    $(document).on('touchmove'+tag + (options.mouse ? ' mousemove'+tag : ''), function(e) {
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;
@@ -261,7 +301,7 @@
       setOffset($container, target, 0);
     });
 
-    $(document).on('touchend.swipeshow' + (options.mouse ? ' mouseup.swipeshow' : ''), function(e) {
+    $(document).on('touchend'+tag + (options.mouse ? ' mouseup'+tag : ''), function(e) {
       if (c.disabled) return;
       if ($container.is(':animated')) return;
       if (!moving) return;

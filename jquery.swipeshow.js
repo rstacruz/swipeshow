@@ -60,6 +60,8 @@
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
 
+  var touchEnabled = ('ontouchstart' in document.documentElement);
+
   // Count instances.
   var instances = 0;
 
@@ -112,8 +114,7 @@
       $container.css({ width: width * $slides.length });
 
       // Add classes.
-      $slideshow.addClass(
-        ('ontouchstart' in document.documentElement) ? 'touch' : 'no-touch');
+      $slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
 
       // Defer starting until images are loaded.
       if (options.autostart !== false) {
@@ -362,6 +363,9 @@
 
   // Binds pause-on-hover behavior.
   function bindHover($slideshow, c, options) {
+    // No need for this on touch-enabled browsers.
+    if (touchEnabled) return;
+
     var tag = $slideshow.data('swipeshow:tag');
 
     var paused = false;

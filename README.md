@@ -196,6 +196,21 @@ There are quick Sass mixins for use with Swipeshow: [swipeshow.scss].
 
 [swipeshow.scss]: https://github.com/rstacruz/swipeshow/blob/master/_swipeshow.scss
 
+Unbinding Swipeshow
+-------------------
+
+You can destroy a Swipeshow by doing:
+
+``` js
+$(".slideshow").unswipeshow();
+```
+
+This is different from `.swipeshow().pause()` in that it unbinds all events and
+destroys any trace of there ever been a slideshow.
+
+This is useful if you want to, say, re-initialize the slideshow with new items
+(since you can't change items while a slideshow is happening).
+
 Cycler
 ------
 
@@ -209,6 +224,25 @@ See it somewhere in the middle [jquery.swipeshow.js]: documentation is there as
 inline comments.
 
 [jquery.swipeshow.js]: https://github.com/rstacruz/swipeshow/blob/master/jquery.swipeshow.js
+
+Limitations
+-----------
+
+Some known limitations:
+
+ - It's assumed that the width is fixed. Variable-width slideshows aren't
+ supported.
+
+ - It's assumed that the length of slides are fixed. You can't add or remove new
+ slides while a slideshow is running.
+
+To get around these limitations, you can always destroy a swipeshow by using
+`.unswipeshow()` and re-initializing it.
+
+Also:
+
+ - Only horizontal scrolling is supported. (Seriously, a vertical slideshow is
+ silly)
 
 License
 -------

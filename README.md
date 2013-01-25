@@ -183,6 +183,7 @@ style more stuff via CSS.
    - has the `touch` class when touch is on, or `no-touch` on desktops.
    - has `running` when the slideshow is auto-advancing.
    - has `paused` when the slideshow is paused (like on hover).
+   - has `swipeshow-active` after Swipeshow is initialized.
  - `.slides`
    - has the `gliding` class when it's gliding.
    - has the `grabbed` class when it's currently being dragged.

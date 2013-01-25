@@ -82,6 +82,8 @@
 
       var width = $slideshow.width();
 
+      $slideshow.addClass('paused swipeshow-active');
+
       // Use Cycler.
       var c = new Cycler($slides, $.extend({}, options, {
         autostart: false,
@@ -129,8 +131,6 @@
         } else {
           c.start();
         }
-      } else {
-        $slideshow.addClass('paused');
       }
 
       // Bind
@@ -163,6 +163,7 @@
     this.each(function() {
       var $slideshow = $(this);
       var $container = $slideshow.find('> .slides');
+      var $slides    = $container.find('> .slide');
 
       var c = $slideshow.data('swipeshow');
       var tag = $slideshow.data('swipeshow:tag');
@@ -178,6 +179,12 @@
 
         // Unregister so that it can be initialized again later.
         $slideshow.data('swipeshow', null);
+
+        // Remove magic classes
+        $slideshow.removeClass('running paused swipeshow-active');
+        $container.removeClass('gliding grabbed');
+        $slides.removeClass('active');
+        $('html').removeClass('swipeshow-grabbed');
       }
     });
 

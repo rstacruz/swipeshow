@@ -30,8 +30,8 @@ below). Then just fire `$('...').swipeshow()`.
 
 ### HTML markup
 
-Swipeshow goes by the assumption that your slideshow element looks like `.slides
-> .slide`. You are free to put whatever you want inside `.slide`, or even
+Swipeshow goes by the assumption that your slideshow element looks like
+`.slides > .slide`. You are free to put whatever you want inside `.slide`, or even
 `.slideshow`!
 
 ``` html

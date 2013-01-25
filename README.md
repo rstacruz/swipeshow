@@ -226,16 +226,14 @@ This is useful if you want to, say, re-initialize the slideshow with new items
 Cycler
 ------
 
-Need more control over your slideshow? Use Cycler: a very simple library for
-doing slideshow animations bundled with swipeshow.
+Need more control over your slideshow? Use [Cycler.js]: a very simple library
+for doing slideshow animations. It is bundled with swipeshow, and is also
+available separately.
 
 It lets you define all behavior yourself and just provides you a model-like
 interface to manage the slides and timers.
 
-See it somewhere in the middle [jquery.swipeshow.js]: documentation is there as
-inline comments.
-
-[jquery.swipeshow.js]: https://github.com/rstacruz/swipeshow/blob/master/jquery.swipeshow.js
+[Cycler.js]: https://github.com/rstacruz/jquery-stuff/blob/master/cycler
 
 Limitations
 -----------

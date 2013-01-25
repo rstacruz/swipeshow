@@ -13,6 +13,13 @@ The unassuming touch-enabled JavaScript slideshow. Requires jQuery 1.8.
  render smoothly on mobile devices. It will automatically fall back to
  frame-by-frame animation when transitions aren't available.
 
+More features!
+
+ * Auto-pauses on hover
+ * [Auto-advance](#options) can be turned on/off (`autostart`)
+ * [Configurable](#options), like... totally
+ * [Can be controlled](#controlling-the-slideshow) via JavaScript
+
 How to use
 ----------
 
@@ -152,8 +159,8 @@ $(".slideshow").swipeshow({
 });
 ```
 
-Programmatic usage
-------------------
+Controlling the slideshow
+-------------------------
 
 Access them using `$(".slideshow").swipeshow()`:
 
@@ -172,12 +179,17 @@ Magic classes
 Your markup gets additional CSS classes depending on things. This allows you to 
 style more stuff via CSS.
 
- - `.slideshow` - gets the `touch` class when touch is on, or `no-touch` on 
- desktops.
- - `.slides` - gets the `gliding` class when it's gliding.
- - `.slides` -- gets the `grabbed` class when it's currently being dragged.
- - `.slide`  -- gets the `active` class when it's the selected one.
- - `<html>` -- gets the `swipeshow-grabbed` class when grabbing.
+ - `.slideshow`
+   - has the `touch` class when touch is on, or `no-touch` on desktops.
+   - has `running` when the slideshow is auto-advancing.
+   - has `paused` when the slideshow is paused (like on hover).
+ - `.slides`
+   - has the `gliding` class when it's gliding.
+   - has the `grabbed` class when it's currently being dragged.
+ - `.slide`
+   - has the `active` class when it's the selected one.
+ - `<html>`
+   - has the `swipeshow-grabbed` class when grabbing a slide.
 
 Sass helpers
 ------------

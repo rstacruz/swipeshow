@@ -78,15 +78,13 @@
       var $slides    = $container.find('> .slide');
 
       // Idempotency: don't do anything if it's already been initialized.
-      if ($slideshow.data('swipeshow')) {
-        console.log('lready initilaized');
-        return;
-      }
+      if ($slideshow.data('swipeshow')) return;
 
       var width = $slideshow.width();
 
       // Use Cycler.
       var c = new Cycler($slides, $.extend({}, options, {
+        autostart: false,
         onactivate: function(current, i, prev, j) {
           if (options.onactivate) options.onactivate(current, i, prev, j);
 
@@ -96,7 +94,16 @@
 
           // Move
           setOffset($container, -1 * width * i, options.speed);
+        },
+        onpause: function() {
+          if (options.onpause) options.onpause();
+          $slideshow.addClass('paused').removeClass('running');
+        },
+        onstart: function() {
+          if (options.onstart) options.onstart();
+          $slideshow.removeClass('paused').addClass('running');
         }
+
       }));
 
       // Auto-size the container.
@@ -122,10 +129,13 @@
         } else {
           c.start();
         }
+      } else {
+        $slideshow.addClass('paused');
       }
 
       // Bind
       bindSwipe($slideshow, $container, c, options);
+      bindHover($slideshow, c, options);
 
       // Bind a "next slide" button.
       var $next = options.$next || $slideshow.find('.next');
@@ -341,7 +351,26 @@
       // Reset.
       moving = false;
     });
+  }
 
+  // Binds pause-on-hover behavior.
+  function bindHover($slideshow, c, options) {
+    var tag = $slideshow.data('swipeshow:tag');
+
+    var paused = false;
+    $slideshow.on('mouseenter'+tag, function() {
+      if (c.isStarted()) {
+        paused = true;
+        c.pause();
+      }
+    });
+
+    $slideshow.on('mouseleave'+tag, function() {
+      if (paused) {
+        paused = false;
+        c.start();
+      }
+    });
   }
 
   // Extracts the X from given event object. Works for mouse or touch events.
@@ -496,7 +525,7 @@
     this.onpause    = options.onpause || (function(){});
     this.onstart    = options.onstart || (function(){});
     this.initial    = (typeof options.initial === 'undefined') ? 0 : options.initial;
-    this.autostart  = (typeof options.initial === 'undefined') ? true : options.autostart;
+    this.autostart  = (typeof options.autostart === 'undefined') ? true : options.autostart;
     this.list       = list;
     this.current    = null;
 
@@ -529,7 +558,7 @@
 
     // Delays the interval a bit
     restart: function(silent) {
-      if (this._timer) this.pause(true).start(silent);
+      if (this.isStarted()) this.pause(true).start(silent);
       return this;
     },
 

@@ -53,7 +53,7 @@
   }
 
   @if $cursor == true {
-    .slides {
+    &.swipeshow-active .slides {
       cursor: -moz-grab !important;
       cursor: ew-resize;
     }

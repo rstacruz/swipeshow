@@ -178,6 +178,7 @@
         $container.find('img').off(tag);
         $container.off(tag);
         $(document).off(tag);
+        $(window).off(tag);
 
         // Unregister so that it can be initialized again later.
         $slideshow.data('swipeshow', null);

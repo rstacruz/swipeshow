@@ -82,14 +82,14 @@
       // Idempotency: don't do anything if it's already been initialized.
       if ($slideshow.data('swipeshow')) return;
 
-      var width = $slideshow.width();
-
       $slideshow.addClass('paused swipeshow-active');
 
       // Use Cycler.
       var c = new Cycler($slides, $.extend({}, options, {
         autostart: false,
         onactivate: function(current, i, prev, j) {
+          var width = $slideshow.width();
+
           if (options.onactivate) options.onactivate(current, i, prev, j);
 
           // Set classes
@@ -119,6 +119,7 @@
       // Resize thingie.
       $(window).on('resize'+tag, function() {
         reposition($slideshow, $container, $slides);
+        // reset the offset
       });
       $(window).trigger('resize'+tag);
 
@@ -247,7 +248,7 @@
     var lastTouch;
     var minDelta; // Minimum change for it to take effect.
 
-    var width = $slideshow.width();
+    var width; // widtih of the slideshow
     var length = c.list.length;
     var friction = options.friction;
 
@@ -280,6 +281,7 @@
       $container.addClass('grabbed');
       $('html').addClass('swipeshow-grabbed');
 
+      width  = $slideshow.width();
       moving = true;
       origin = { x: getX(e) };
       start  = { x: getOffset($container), started: c.isStarted() };

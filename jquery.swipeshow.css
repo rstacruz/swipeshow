@@ -48,7 +48,7 @@ html.swipeshow-grabbed * {
   cursor: ew-resize;
 }
 
-/* Positioning - do this via JS */
+/* Positioning */
 .swipeshow .slides,
 .swipeshow .slide {
   position: absolute;
@@ -64,9 +64,8 @@ html.swipeshow-grabbed * {
   z-index: 1;
 }
 
-/* Remove me later */
-.swipeshow .slide:nth-child(1) { left: 0; }
-.swipeshow .slide:nth-child(2) { left: 100%; }
-.swipeshow .slide:nth-child(3) { left: 200%; }
-.swipeshow .slide:nth-child(4) { left: 300%; }
-  
+/* Defaults: OVERRIDE THIS! */
+.swipeshow {
+  width: 100px;
+  height: 100px;
+}

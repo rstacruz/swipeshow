@@ -81,6 +81,11 @@
     this._bindButtons();
     if (options.autostart !== false) this._startSlideshow();
 
+    // Bind events.
+    bindSwipe(this.$slideshow, this.$container, this.cycler, this.options, this.tag);
+    bindHover(this.$slideshow, this.cycler, this.options);
+    this._bindResize();
+
     return this;
   }
 
@@ -91,6 +96,37 @@
     next:     function()  { this.cycler.next(); return this; },
     pause:    function()  { this.cycler.pause(); return this; },
     start:    function()  { this.cycler.start(); return this; },
+
+    defaults: {
+      speed: 400,
+      friction: 0.3,
+      mouse: true
+    },
+
+    unbind: function() {
+      var $slideshow = this.$slideshow;
+      var $container = this.$container;
+      var $slides    = this.$slides;
+      var tag = this.tag;
+
+      // Kill the timer.
+      this.cycler.pause();
+
+      // Unbind the events based on their tag (eg, `swipeshow-1`).
+      $container.find('img').off(tag);
+      $container.off(tag);
+      $(document).off(tag);
+      $(window).off(tag);
+
+      // Unregister so that it can be initialized again later.
+      $slideshow.data('swipeshow', null);
+
+      // Remove magic classes
+      $slideshow.removeClass('running paused swipeshow-active touch no-touch');
+      $container.removeClass('gliding grabbed');
+      $slides.removeClass('active');
+      $('html').removeClass('swipeshow-grabbed');
+    },
 
     // Returns the cycler.
     _getCycler: function() {
@@ -107,7 +143,6 @@
 
     // On slideshow activate handler for Cycler.
     _onactivate: function(current, i, prev, j) {
-
       if (this.options.onactivate) this.options.onactivate(current, i, prev, j);
 
       // Set classes
@@ -166,7 +201,6 @@
     // Starts the slideshow initially.
     _startSlideshow: function() {
       var ss = this;
-
       var $images = ss.$slideshow.find('img');
 
       // If there are images, defer starting until images are loaded.
@@ -184,6 +218,33 @@
           ss.start();
         });
       }
+    },
+
+    // Re-adjusts the slideshow after resizing the window.
+    _bindResize: function() {
+      var ss = this;
+
+      $(window).on('resize'+ss.tag, function() {
+        var width = ss.$slideshow.width();
+
+        // Re-sit the current slide
+        setOffset(ss.$container, -1 * width * ss.cycler.current, 0);
+
+        // Reposition the CSS of the container and slides
+        ss._reposition();
+      });
+
+      $(window).trigger('resize'+ss.tag);
+    },
+
+    // Reposition the CSS of the container and slides
+    _reposition: function() {
+      var width = this.$slideshow.width();
+      var count = this.$slides.length;
+
+      this.$slides.css({ width: width });
+      this.$container.css({ width: width * count });
+      this.$slides.each(function(i) { $(this).css({ left: width * i }); });
     }
 
   };
@@ -191,11 +252,7 @@
   $.fn.swipeshow = function(options) {
     if (!options) options = {};
 
-    options = $.extend({}, {
-      speed: 400,
-      friction: 0.3,
-      mouse: true
-    }, options);
+    options = $.extend({}, Swipeshow.prototype.defaults, options);
 
     $(this).each(function() {
       // Idempotency: don't do anything if it's already been initialized.
@@ -203,21 +260,6 @@
 
       var ss = new Swipeshow(this, options);
       $(this).data('swipeshow', ss);
-
-      var $slideshow = $(this);
-      var $container = $slideshow.find('> .slides');
-      var $slides    = $container.find('> .slide');
-
-      // Use Cycler.
-      var c = ss.cycler;
-
-      // Tags for the events (so they can be unbound later)
-      var tag = ss.tag;
-
-      // Bind events.
-      bindSwipe($slideshow, $container, c, options, tag);
-      bindHover($slideshow, c, options);
-      bindResize($slideshow, $container, $slides, c, tag);
     });
 
     return $(this).data('swipeshow');
@@ -225,36 +267,10 @@
 
   // Unbinds everything.
   $.fn.unswipeshow = function() {
-    this.each(function() {
-      var $slideshow = $(this);
-      var $container = $slideshow.find('> .slides');
-      var $slides    = $container.find('> .slide');
-
-      var c = $slideshow.data('swipeshow');
-      var tag = $slideshow.data('swipeshow:tag');
-
-      if (c) {
-        // Kill the timer.
-        c.pause();
-
-        // Unbind the events based on their tag (eg, `swipeshow-1`).
-        $container.find('img').off(tag);
-        $container.off(tag);
-        $(document).off(tag);
-        $(window).off(tag);
-
-        // Unregister so that it can be initialized again later.
-        $slideshow.data('swipeshow', null);
-
-        // Remove magic classes
-        $slideshow.removeClass('running paused swipeshow-active touch no-touch');
-        $container.removeClass('gliding grabbed');
-        $slides.removeClass('active');
-        $('html').removeClass('swipeshow-grabbed');
-      }
+    return this.each(function() {
+      var ss = $(this).data('swipeshow');
+      if (ss) ss.unbind();
     });
-
-    return this;
   };
 
   var offsetTimer;
@@ -447,20 +463,6 @@
     });
   }
 
-  // Re-adjusts the slideshow after resizing the window.
-  function bindResize($slideshow, $container, $slides, c, tag) {
-    $(window).on('resize'+tag, function() {
-      var width = $slideshow.width();
-
-      // Re-sit the current slide
-      setOffset($container, -1 * width * c.current, 0);
-
-      // Reposition the CSS of the container and slides
-      reposition($slideshow, $container, $slides);
-    });
-    $(window).trigger('resize'+tag);
-  }
-
   // Extracts the X from given event object. Works for mouse or touch events.
   function getX(e) {
     if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0])
@@ -468,15 +470,6 @@
 
     if (e.clientX)
       return e.clientX;
-  }
-
-  function reposition($slideshow, $container, $slides) {
-    var width = $slideshow.width();
-    var count = $slides.length;
-
-    $slides.css({ width: width });
-    $container.css({ width: width * count });
-    $slides.each(function(i) { $(this).css({ left: width * i }); });
   }
 })(jQuery);
 

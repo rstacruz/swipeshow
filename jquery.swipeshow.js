@@ -82,7 +82,7 @@
     if (options.autostart !== false) this._startSlideshow();
 
     // Bind events.
-    bindSwipe(this.$slideshow, this.$container, this.cycler, this.options, this.tag);
+    this._bindSwipeEvents();
     this._bindHoverPausing();
     this._bindResize();
 
@@ -270,8 +270,141 @@
         hoverPaused = false;
         ss.start();
       });
-    }
+    },
 
+    // Binds swiping behavior.
+    _bindSwipeEvents: function() {
+      var ss = this;
+      var $slideshow = ss.$slideshow;
+      var $container = ss.$container;
+      var c = ss.cycler;
+      var options = ss.options;
+      var tag = ss.tag;
+
+      var moving = false;
+      var origin;
+      var start;
+      var delta;
+      var lastTouch;
+      var minDelta; // Minimum change for it to take effect.
+
+      var width; // widtih of the slideshow
+      var length = c.list.length;
+      var friction = options.friction;
+
+      // Store the tag so it can be unbound later.
+      $slideshow.data('swipeshow:tag', tag);
+
+      // Prevent dragging of the image.
+      $container.find('img').on('mousedown'+tag, function(e) {
+        e.preventDefault();
+      });
+
+      $container.on('touchstart'+tag + (options.mouse ? ' mousedown'+tag : ''), function(e) {
+        // Only prevent mouse clicks. This allows vertical scrolling on mobile.
+        // Do this before the sanity checks... you don't want the user to
+        // accidentally drag the <img>.
+        if (e.type === 'mousedown')
+          e.preventDefault();
+
+        if (c.disabled) return;
+        if ($container.is(':animated')) $container.stop();
+
+        // Make some elements hard to swipe from.
+        if ($(e.target).is('button, a, [data-tappable]')) {
+          minDelta = 100;
+        } else {
+          minDelta = 0;
+        }
+
+        // Add classes.
+        $container.addClass('grabbed');
+        $('html').addClass('swipeshow-grabbed');
+
+        width  = $slideshow.width();
+        moving = true;
+        origin = { x: getX(e) };
+        start  = { x: getOffset($container), started: c.isStarted() };
+        delta  = 0;
+        lastTouch = null;
+
+        // Pause the slideshow, but resume it later.
+        if (start.started) c.pause();
+      });
+
+      $(document).on('touchmove'+tag + (options.mouse ? ' mousemove'+tag : ''), function(e) {
+        if (c.disabled) return;
+        if ($container.is(':animated')) return;
+        if (!moving) return;
+
+        // X can sometimes be NaN because the touch event may not have any X/Y info.
+        var x = getX(e);
+        if (isNaN(x)) return;
+
+        delta = x - origin.x;
+
+        // When swiping was triggered on a button, it should be harder to swipe from.
+        if (Math.abs(delta) <= minDelta) delta = 0;
+
+        var target = start.x + delta;
+        var max = -1 * width * (length - 1);
+
+        // Only prevent scrolling when it's moved too far to the right/left
+        if (Math.abs(delta) > 3)
+          e.preventDefault();
+
+        // Have some friction when scrolling out of bounds.
+        if (target > 0) target *= friction;
+        if (target < max) target = max + (target - max) * friction;
+
+        // Record when it was last touched, so that when the finger is lifted, we
+        // know how long it's been since
+        lastTouch = +new Date();
+        
+        setOffset($container, target, 0);
+      });
+
+      $(document).on('touchend'+tag + (options.mouse ? ' mouseup'+tag : ''), function(e) {
+        if (c.disabled) return;
+        if ($container.is(':animated')) return;
+        if (!moving) return;
+
+        var left  = getOffset($container);
+
+        // Set classes
+        $container.removeClass('grabbed');
+        $('html').removeClass('swipeshow-grabbed');
+
+        // Find out what slide it stopped to.
+        var index = -1 * Math.round(left / width);
+
+        // If the finger moved, but not enough to advance...
+        if (lastTouch && c.current === index) {
+          var timeDelta = +new Date() - lastTouch;
+
+          // If distance is far enough, and time is short enough.
+          // I just winged these magic numbers trying to compare the experience to iOS's Photo app.
+          if (Math.abs(delta) > 10 && timeDelta < 20) {
+            var sign = delta < 0 ? -1 : 1;
+            index -= sign;
+          }
+        }
+
+        if (index < 0) index = 0;
+        if (index > c.list.length-1) index = c.list.length-1;
+
+        // Switch to that slide.
+        c.goTo(index);
+
+        e.preventDefault();
+
+        // Restart the slideshow if it was already started before.
+        if (start.started) c.start();
+
+        // Reset.
+        moving = false;
+      });
+    }
   };
 
   $.fn.swipeshow = function(options) {
@@ -336,133 +469,6 @@
   // the stored value.
   function getOffset($el) {
     return $el.data('swipeshow:left') || 0;
-  }
-
-  // Binds swiping behavior.
-  function bindSwipe($slideshow, $container, c, options, tag) {
-    var moving = false;
-    var origin;
-    var start;
-    var delta;
-    var lastTouch;
-    var minDelta; // Minimum change for it to take effect.
-
-    var width; // widtih of the slideshow
-    var length = c.list.length;
-    var friction = options.friction;
-
-    // Store the tag so it can be unbound later.
-    $slideshow.data('swipeshow:tag', tag);
-
-    // Prevent dragging of the image.
-    $container.find('img').on('mousedown'+tag, function(e) {
-      e.preventDefault();
-    });
-
-    $container.on('touchstart'+tag + (options.mouse ? ' mousedown'+tag : ''), function(e) {
-      // Only prevent mouse clicks. This allows vertical scrolling on mobile.
-      // Do this before the sanity checks... you don't want the user to
-      // accidentally drag the <img>.
-      if (e.type === 'mousedown')
-        e.preventDefault();
-
-      if (c.disabled) return;
-      if ($container.is(':animated')) $container.stop();
-
-      // Make some elements hard to swipe from.
-      if ($(e.target).is('button, a, [data-tappable]')) {
-        minDelta = 100;
-      } else {
-        minDelta = 0;
-      }
-
-      // Add classes.
-      $container.addClass('grabbed');
-      $('html').addClass('swipeshow-grabbed');
-
-      width  = $slideshow.width();
-      moving = true;
-      origin = { x: getX(e) };
-      start  = { x: getOffset($container), started: c.isStarted() };
-      delta  = 0;
-      lastTouch = null;
-
-      // Pause the slideshow, but resume it later.
-      if (start.started) c.pause();
-    });
-
-    $(document).on('touchmove'+tag + (options.mouse ? ' mousemove'+tag : ''), function(e) {
-      if (c.disabled) return;
-      if ($container.is(':animated')) return;
-      if (!moving) return;
-
-      // X can sometimes be NaN because the touch event may not have any X/Y info.
-      var x = getX(e);
-      if (isNaN(x)) return;
-
-      delta = x - origin.x;
-
-      // When swiping was triggered on a button, it should be harder to swipe from.
-      if (Math.abs(delta) <= minDelta) delta = 0;
-
-      var target = start.x + delta;
-      var max = -1 * width * (length - 1);
-
-      // Only prevent scrolling when it's moved too far to the right/left
-      if (Math.abs(delta) > 3)
-        e.preventDefault();
-
-      // Have some friction when scrolling out of bounds.
-      if (target > 0) target *= friction;
-      if (target < max) target = max + (target - max) * friction;
-
-      // Record when it was last touched, so that when the finger is lifted, we
-      // know how long it's been since
-      lastTouch = +new Date();
-      
-      setOffset($container, target, 0);
-    });
-
-    $(document).on('touchend'+tag + (options.mouse ? ' mouseup'+tag : ''), function(e) {
-      if (c.disabled) return;
-      if ($container.is(':animated')) return;
-      if (!moving) return;
-
-      var left  = getOffset($container);
-
-      // Set classes
-      $container.removeClass('grabbed');
-      $('html').removeClass('swipeshow-grabbed');
-
-      // Find out what slide it stopped to.
-      var index = -1 * Math.round(left / width);
-
-      // If the finger moved, but not enough to advance...
-      if (lastTouch && c.current === index) {
-        var timeDelta = +new Date() - lastTouch;
-
-        // If distance is far enough, and time is short enough.
-        // I just winged these magic numbers trying to compare the experience to iOS's Photo app.
-        if (Math.abs(delta) > 10 && timeDelta < 20) {
-          var sign = delta < 0 ? -1 : 1;
-          index -= sign;
-        }
-      }
-
-      if (index < 0) index = 0;
-      if (index > c.list.length-1) index = c.list.length-1;
-
-      // Switch to that slide.
-      c.goTo(index);
-
-      e.preventDefault();
-
-      // Restart the slideshow if it was already started before.
-      if (start.started) c.start();
-
-      // Reset.
-      moving = false;
-    });
   }
 
   // Extracts the X from given event object. Works for mouse or touch events.

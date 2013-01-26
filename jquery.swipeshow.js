@@ -110,9 +110,6 @@
 
       }));
 
-      // Auto-size the container.
-      $container.css({ width: width * $slides.length });
-
       // Add classes.
       $slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
 

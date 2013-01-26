@@ -28,9 +28,7 @@ a:hover {
   color: #222; }
 
 /* Slideshow metrics */
-.slideshow,
-.slides,
-.slide {
+.slideshow {
   width: 200px;
   height: 200px; }
 
@@ -46,8 +44,8 @@ a:hover {
 }
 
 .slides img {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
 }
 
 /* Super slide */

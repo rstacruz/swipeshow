@@ -65,6 +65,129 @@
   // Count instances.
   var instances = 0;
 
+  function Swipeshow(element, options) {
+    this.$slideshow = $(element);
+    this.$container = this.$slideshow.find('> .slides');
+    this.$slides    = this.$container.find('> .slide');
+    this.options    = options;
+    this.cycler     = this._getCycler();
+    this.tag        = '.swipeshow.swipeshow-'+(++instances);
+
+    // Buttons
+    this.$next      = options.$next || this.$slideshow.find('.next');
+    this.$previous  = options.$previous || this.$slideshow.find('.previous');
+
+    this._addClasses();
+    this._bindButtons();
+    if (options.autostart !== false) this._startSlideshow();
+
+    return this;
+  }
+
+  Swipeshow.prototype = {
+    // Public API: delegate to Cycler
+    goTo:     function(n) { this.cycler.goTo(n); return this; },
+    previous: function()  { this.cycler.previous(); return this; },
+    next:     function()  { this.cycler.next(); return this; },
+    pause:    function()  { this.cycler.pause(); return this; },
+    start:    function()  { this.cycler.start(); return this; },
+
+    // Returns the cycler.
+    _getCycler: function() {
+      var ss = this;
+      var options = this.options;
+
+      return new Cycler(ss.$slides, $.extend({}, options, {
+        autostart: false,
+        onactivate: $.proxy(this._onactivate, this),
+        onpause: $.proxy(this._onpause, this),
+        onstart: $.proxy(this._onstart, this)
+      }));
+    },
+
+    // On slideshow activate handler for Cycler.
+    _onactivate: function(current, i, prev, j) {
+
+      if (this.options.onactivate) this.options.onactivate(current, i, prev, j);
+
+      // Set classes
+      if (prev) $(prev).removeClass('active');
+      if (current) $(current).addClass('active');
+
+      // Move to the slide
+      this._moveToSlide(i);
+    },
+
+    // Moves to slide number `i`. (Internal)
+    // For external use, just use goto().
+    _moveToSlide: function(i) {
+      var width = this.$slideshow.width();
+      setOffset(this.$container, -1 * width * i, this.options.speed);
+    },
+
+    // On slideshow pause handler.
+    _onpause: function() {
+      if (this.options.onpause) this.options.onpause();
+      this.$slideshow
+        .addClass('paused')
+        .removeClass('running');
+    },
+
+    // On slideshow start handler.
+    _onstart: function() {
+      if (this.options.onstart) this.options.onstart();
+      this.$slideshow
+        .removeClass('paused')
+        .addClass('running');
+    },
+
+    // Add classes to $slideshow.
+    _addClasses: function() {
+      this.$slideshow.addClass('paused swipeshow-active');
+      this.$slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
+    },
+
+    // Binds events to buttons.
+    _bindButtons: function() {
+      var ss = this;
+      var c = ss.cycler; // TODO: Remove cycler
+
+      this.$next.on('click', function(e) {
+        e.preventDefault();
+        if (!c.disabled) c.next();
+      });
+
+      this.$previous.on('click', function(e) {
+        e.preventDefault();
+        if (!c.disabled) c.previous();
+      });
+    },
+
+    // Starts the slideshow initially.
+    _startSlideshow: function() {
+      var ss = this;
+
+      var $images = ss.$slideshow.find('img');
+
+      // If there are images, defer starting until images are loaded.
+      if ($images.length === 0) {
+        ss.start();
+      } else {
+        ss.disabled = true;
+        ss.cycler.disabled = true;
+        ss.$slideshow.addClass('disabled');
+
+        $images.onloadall(function() {
+          ss.disabled = false;
+          ss.cycler.disabled = false;
+          ss.$slideshow.removeClass('disabled');
+          ss.start();
+        });
+      }
+    }
+
+  };
+
   $.fn.swipeshow = function(options) {
     if (!options) options = {};
 
@@ -75,86 +198,26 @@
     }, options);
 
     $(this).each(function() {
+      // Idempotency: don't do anything if it's already been initialized.
+      if ($(this).data('swipeshow')) return;
+
+      var ss = new Swipeshow(this, options);
+      $(this).data('swipeshow', ss);
+
       var $slideshow = $(this);
       var $container = $slideshow.find('> .slides');
       var $slides    = $container.find('> .slide');
 
-      // Idempotency: don't do anything if it's already been initialized.
-      if ($slideshow.data('swipeshow')) return;
-
-      $slideshow.addClass('paused swipeshow-active');
-
       // Use Cycler.
-      var c = new Cycler($slides, $.extend({}, options, {
-        autostart: false,
-        onactivate: function(current, i, prev, j) {
-          var width = $slideshow.width();
-
-          if (options.onactivate) options.onactivate(current, i, prev, j);
-
-          // Set classes
-          if (prev) $(prev).removeClass('active');
-          if (current) $(current).addClass('active');
-
-          // Move
-          setOffset($container, -1 * width * i, options.speed);
-        },
-        onpause: function() {
-          if (options.onpause) options.onpause();
-          $slideshow.addClass('paused').removeClass('running');
-        },
-        onstart: function() {
-          if (options.onstart) options.onstart();
-          $slideshow.removeClass('paused').addClass('running');
-        }
-
-      }));
+      var c = ss.cycler;
 
       // Tags for the events (so they can be unbound later)
-      var tag = '.swipeshow.swipeshow-'+(++instances);
-
-      // Add classes.
-      $slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
-
-      // Defer starting until images are loaded.
-      if (options.autostart !== false) {
-        var $images = $slideshow.find('img');
-
-        if ($images.length > 0) {
-          c.disabled = true;
-          $slideshow.addClass('disabled');
-
-          $images.onloadall(function() {
-            c.disabled = false;
-            $slideshow.removeClass('disabled');
-            c.start();
-          });
-        } else {
-          c.start();
-        }
-      }
+      var tag = ss.tag;
 
       // Bind events.
       bindSwipe($slideshow, $container, c, options, tag);
       bindHover($slideshow, c, options);
       bindResize($slideshow, $container, $slides, c, tag);
-
-      // Bind a "next slide" button.
-      var $next = options.$next || $slideshow.find('.next');
-      $next.on('click', function(e) {
-        e.preventDefault();
-        if (!c.disabled) c.next();
-      });
-
-      // Bind a "previous slide" button.
-      var $previous = options.$previous || $slideshow.find('.previous');
-      $previous.on('click', function(e) {
-        e.preventDefault();
-        if (!c.disabled) c.previous();
-      });
-
-      // Save the cycler for future use.
-      $slideshow.data('swipeshow', c);
     });
 
     return $(this).data('swipeshow');

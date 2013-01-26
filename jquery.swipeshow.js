@@ -72,6 +72,7 @@
     this.options    = options;
     this.cycler     = this._getCycler();
     this.tag        = '.swipeshow.swipeshow-'+(++instances);
+    this.disabled   = false;
 
     // Buttons
     this.$next      = options.$next || this.$slideshow.find('.next');
@@ -188,16 +189,15 @@
     // Binds events to buttons.
     _bindButtons: function() {
       var ss = this;
-      var c = ss.cycler; // TODO: Remove cycler
 
       this.$next.on('click', function(e) {
         e.preventDefault();
-        if (!c.disabled) c.next();
+        if (!ss.disabled) ss.next();
       });
 
       this.$previous.on('click', function(e) {
         e.preventDefault();
-        if (!c.disabled) c.previous();
+        if (!ss.disabled) ss.previous();
       });
     },
 
@@ -211,12 +211,10 @@
         ss.start();
       } else {
         ss.disabled = true;
-        ss.cycler.disabled = true;
         ss.$slideshow.addClass('disabled');
 
         $images.onloadall(function() {
           ss.disabled = false;
-          ss.cycler.disabled = false;
           ss.$slideshow.removeClass('disabled');
           ss.start();
         });
@@ -281,6 +279,7 @@
       var options = ss.options;
       var tag = ss.tag;
 
+      // States
       var moving = false;
       var origin;
       var start;
@@ -307,7 +306,7 @@
         if (e.type === 'mousedown')
           e.preventDefault();
 
-        if (c.disabled) return;
+        if (ss.disabled) return;
         if ($container.is(':animated')) $container.stop();
 
         // Make some elements hard to swipe from.
@@ -333,7 +332,7 @@
       });
 
       $(document).on('touchmove'+tag + (options.mouse ? ' mousemove'+tag : ''), function(e) {
-        if (c.disabled) return;
+        if (ss.disabled) return;
         if ($container.is(':animated')) return;
         if (!moving) return;
 
@@ -365,7 +364,7 @@
       });
 
       $(document).on('touchend'+tag + (options.mouse ? ' mouseup'+tag : ''), function(e) {
-        if (c.disabled) return;
+        if (ss.disabled) return;
         if ($container.is(':animated')) return;
         if (!moving) return;
 

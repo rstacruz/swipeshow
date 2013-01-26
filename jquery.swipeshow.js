@@ -118,8 +118,13 @@
 
       // Resize thingie.
       $(window).on('resize'+tag, function() {
+        var width = $slideshow.width();
+
+        // Re-sit the current slide
+        setOffset($container, -1 * width * c.current, 0);
+
+        // Reposition the CSS of the container and slides
         reposition($slideshow, $container, $slides);
-        // reset the offset
       });
       $(window).trigger('resize'+tag);
 

@@ -32,10 +32,10 @@ below). Then just fire `$('...').swipeshow()`.
 
 Swipeshow goes by the assumption that your slideshow element looks like
 `.slides > .slide`. You are free to put whatever you want inside `.slide`, or even
-`.slideshow`!
+`.swideshow`!
 
 ``` html
-<div class="slideshow">
+<div class="swipeshow">
   <ul class="slides">
     <li class="slide"> ... </il>
     <li class="slide"> ... </li>
@@ -46,62 +46,22 @@ Swipeshow goes by the assumption that your slideshow element looks like
 
 ### CSS
 
-Here's the bare-bone CSS to make Swipeshow work. Notice that all it does is lay
-out your `.slides` side-by-side; you'll be in charge of actually styling them
-nicely.
-
-By the way, there are [Sass helpers](#sass-helpers) that can make this easier
-for you.
+Style it however you want.
 
 ``` css
-.slideshow,
-.slideshow .slides,
-.slideshow .slide {
-  display: block;
-  width: 200px;  /* Change me */
-  height: 200px; /* Change me */
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  /* For flicker-prevention */
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-
-  /* In case you add padding */
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.slideshow {
-  overflow: hidden;
-  position: relative;
-}
-
-.slideshow .slides {
-  width: 99999px;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.slideshow .slide {
-  float: left;
-
-  -webkit-user-select: none;   /* iOS: disable text select */
-  -webkit-touch-callout: none; /* iOS: disable callout, image save panel (popup) */
-}
+.swipeshow {
+  width: 200px;
+  height: 200px; }
 ```
 
 ### JavaScript
 
 ...and that's it!
+
+``` html
+<link rel='stylesheet' href='jquery.swipeshow.css'>
+<script src='jquery.swipeshow.css'></script>
+```
 
 ``` js
 $(function() {

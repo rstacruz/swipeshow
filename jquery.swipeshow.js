@@ -55,7 +55,7 @@
 (function($) {
   $.swipeshow = {};
 
-  $.swipeshow.version = "0.9.2";
+  $.swipeshow.version = "0.10.0";
 
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';

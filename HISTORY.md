@@ -1,3 +1,17 @@
+v0.10.0 - Jan 26, 2013
+----------------------
+
+  * Percent-based widths are now supported (`width: 100%`).
+  * CSS has been simplified.
+  * Sass helpers have been deprecated. (since the CSS is already quite simple!)
+
+Other changes and fixes:
+
+  * Disable pause-on-hover for touch devices.
+  * (Internal) lots of refactors.
+  * Implement 'swipeshow-active' class.
+  * Remove magic classes after `unswipeshow()`.
+
 v0.9.2 - Jan 25, 2013
 ---------------------
 

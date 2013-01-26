@@ -48,7 +48,8 @@ Swipeshow goes by the assumption that your slideshow element looks like
 
 ### CSS
 
-Style it however you want.
+Define the dimensions of your slideshow. (Keep in mind you can style a different 
+    class!) You can use percent-based widths (`width: 100%`) if you like.
 
 ``` css
 .swipeshow {

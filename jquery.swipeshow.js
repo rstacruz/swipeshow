@@ -322,7 +322,7 @@
 
         width  = $slideshow.width();
         moving = true;
-        origin = { x: getX(e) };
+        origin = { x: null };
         start  = { x: getOffset($container), started: c.isStarted() };
         delta  = 0;
         lastTouch = null;
@@ -339,6 +339,10 @@
         // X can sometimes be NaN because the touch event may not have any X/Y info.
         var x = getX(e);
         if (isNaN(x)) return;
+
+        // Regord the first touch now. on a touchmove, not a touchstart. They
+        // sometimes return different x/y coordinates.
+        if (origin.x === null) origin.x = x;
 
         delta = x - origin.x;
 

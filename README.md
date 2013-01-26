@@ -155,23 +155,6 @@ style more stuff via CSS.
  - `<html>`
    - has the `swipeshow-grabbed` class when grabbing a slide.
 
-Sass helpers
-------------
-
-There are quick Sass mixins for use with Swipeshow: [swipeshow.scss].
-
-``` css
-@import 'swipeshow';
-
-.slideshow {
-  @include swipeshow(200px, 200px);
-}
-
-@include swipeshow-grab-cursor;
-```
-
-[swipeshow.scss]: https://github.com/rstacruz/swipeshow/blob/master/_swipeshow.scss
-
 Unbinding Swipeshow
 -------------------
 

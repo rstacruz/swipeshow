@@ -110,8 +110,17 @@
 
       }));
 
+      // Tags for the events (so they can be unbound later)
+      var tag = '.swipeshow.swipeshow-'+(++instances);
+
       // Add classes.
       $slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
+
+      // Resize thingie.
+      $(window).on('resize'+tag, function() {
+        reposition($slideshow, $container, $slides);
+      });
+      $(window).trigger('resize'+tag);
 
       // Defer starting until images are loaded.
       if (options.autostart !== false) {
@@ -132,7 +141,7 @@
       }
 
       // Bind
-      bindSwipe($slideshow, $container, c, options);
+      bindSwipe($slideshow, $container, c, options, tag);
       bindHover($slideshow, c, options);
 
       // Bind a "next slide" button.
@@ -230,7 +239,7 @@
   }
 
   // Binds swiping behavior.
-  function bindSwipe($slideshow, $container, c, options) {
+  function bindSwipe($slideshow, $container, c, options, tag) {
     var moving = false;
     var origin;
     var start;
@@ -241,9 +250,6 @@
     var width = $slideshow.width();
     var length = c.list.length;
     var friction = options.friction;
-
-    // Tags for the events (so they can be unbound later)
-    var tag = '.swipeshow.swipeshow-'+(++instances);
 
     // Store the tag so it can be unbound later.
     $slideshow.data('swipeshow:tag', tag);
@@ -388,6 +394,15 @@
 
     if (e.clientX)
       return e.clientX;
+  }
+
+  function reposition($slideshow, $container, $slides) {
+    var width = $slideshow.width();
+    var count = $slides.length;
+
+    $slides.css({ width: width });
+    $container.css({ width: width * count });
+    $slides.each(function(i) { $(this).css({ left: width * i }); });
   }
 })(jQuery);
 

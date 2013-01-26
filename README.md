@@ -16,6 +16,8 @@ The unassuming touch-enabled JavaScript slideshow. Requires jQuery 1.8.
 More features!
 
  * Auto-pauses on hover
+ * Percent-based width slideshows are supported
+ * Graceful degradation (shows slide #1 when JS isn't available)
  * [Auto-advance](#options) can be turned on/off (`autostart`)
  * [Configurable](#options), like... totally
  * [Can be controlled](#controlling-the-slideshow) via JavaScript
@@ -200,9 +202,6 @@ Limitations
 -----------
 
 Some known limitations:
-
- - It's assumed that the width is fixed. Variable-width slideshows aren't
- supported.
 
  - It's assumed that the length of slides are fixed. You can't add or remove new
  slides while a slideshow is running.

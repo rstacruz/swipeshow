@@ -83,7 +83,7 @@
 
     // Bind events.
     bindSwipe(this.$slideshow, this.$container, this.cycler, this.options, this.tag);
-    bindHover(this.$slideshow, this.cycler, this.options);
+    this._bindHoverPausing();
     this._bindResize();
 
     return this;
@@ -96,6 +96,9 @@
     next:     function()  { this.cycler.next(); return this; },
     pause:    function()  { this.cycler.pause(); return this; },
     start:    function()  { this.cycler.start(); return this; },
+
+    isStarted: function()  { return this.cycler.isStarted(); },
+    isPaused:  function()  { return this.cycler.isPaused(); },
 
     defaults: {
       speed: 400,
@@ -245,6 +248,28 @@
       this.$slides.css({ width: width });
       this.$container.css({ width: width * count });
       this.$slides.each(function(i) { $(this).css({ left: width * i }); });
+    },
+
+    // Binds pause-on-hover behavior.
+    _bindHoverPausing: function() {
+      // No need for this on touch-enabled browsers.
+      if (touchEnabled) return;
+
+      var ss = this;
+      var tag = ss.tag;
+      var hoverPaused = false;
+
+      ss.$slideshow.on('mouseenter'+tag, function() {
+        if (!ss.isStarted()) return;
+        hoverPaused = true;
+        ss.pause();
+      });
+
+      ss.$slideshow.on('mouseleave'+tag, function() {
+        if (!hoverPaused) return;
+        hoverPaused = false;
+        ss.start();
+      });
     }
 
   };
@@ -437,29 +462,6 @@
 
       // Reset.
       moving = false;
-    });
-  }
-
-  // Binds pause-on-hover behavior.
-  function bindHover($slideshow, c, options) {
-    // No need for this on touch-enabled browsers.
-    if (touchEnabled) return;
-
-    var tag = $slideshow.data('swipeshow:tag');
-
-    var paused = false;
-    $slideshow.on('mouseenter'+tag, function() {
-      if (c.isStarted()) {
-        paused = true;
-        c.pause();
-      }
-    });
-
-    $slideshow.on('mouseleave'+tag, function() {
-      if (paused) {
-        paused = false;
-        c.start();
-      }
     });
   }
 

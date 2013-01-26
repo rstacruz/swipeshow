@@ -1,5 +1,6 @@
 /*! Swipeshow (c) 2013 Rico Sta. Cruz, MIT license. */
 
+(function($) {
 // Opinionated, touch-enabled simple slideshow using Cycler.js.
 //
 //     <div class="slideshow">
@@ -52,7 +53,6 @@
 //  - If there are images inside the slides, it will wait to load them before
 //    starting the slideshow.
 
-(function($) {
   $.swipeshow = {};
 
   $.swipeshow.version = "0.10.0";

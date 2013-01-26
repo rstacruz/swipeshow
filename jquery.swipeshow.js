@@ -55,7 +55,7 @@
 (function($) {
   $.swipeshow = {};
 
-  $.swipeshow.version = "0.9.2";
+  $.swipeshow.version = "0.10.0";
 
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
@@ -65,95 +65,358 @@
   // Count instances.
   var instances = 0;
 
-  $.fn.swipeshow = function(options) {
-    if (!options) options = {};
+  function Swipeshow(element, options) {
+    this.$slideshow = $(element);
+    this.$container = this.$slideshow.find('> .slides');
+    this.$slides    = this.$container.find('> .slide');
+    this.options    = options;
+    this.cycler     = this._getCycler();
+    this.tag        = '.swipeshow.swipeshow-'+(++instances);
+    this.disabled   = false;
 
-    options = $.extend({}, {
+    // Buttons
+    this.$next      = options.$next || this.$slideshow.find('.next');
+    this.$previous  = options.$previous || this.$slideshow.find('.previous');
+
+    this._addClasses();
+    this._bindButtons();
+    if (options.autostart !== false) this._startSlideshow();
+
+    // Bind events.
+    this._bindSwipeEvents();
+    this._bindHoverPausing();
+    this._bindResize();
+
+    return this;
+  }
+
+  Swipeshow.prototype = {
+    // Public API: delegate to Cycler
+    goTo:     function(n) { this.cycler.goTo(n); return this; },
+    previous: function()  { this.cycler.previous(); return this; },
+    next:     function()  { this.cycler.next(); return this; },
+    pause:    function()  { this.cycler.pause(); return this; },
+    start:    function()  { this.cycler.start(); return this; },
+
+    isStarted: function()  { return this.cycler.isStarted(); },
+    isPaused:  function()  { return this.cycler.isPaused(); },
+
+    defaults: {
       speed: 400,
       friction: 0.3,
       mouse: true
-    }, options);
+    },
+
+    unbind: function() {
+      var $slideshow = this.$slideshow;
+      var $container = this.$container;
+      var $slides    = this.$slides;
+      var tag = this.tag;
+
+      // Kill the timer.
+      this.cycler.pause();
+
+      // Unbind the events based on their tag (eg, `swipeshow-1`).
+      $container.find('img').off(tag);
+      $container.off(tag);
+      $(document).off(tag);
+      $(window).off(tag);
+
+      // Unregister so that it can be initialized again later.
+      $slideshow.data('swipeshow', null);
+
+      // Remove magic classes
+      $slideshow.removeClass('running paused swipeshow-active touch no-touch');
+      $container.removeClass('gliding grabbed');
+      $slides.removeClass('active');
+      $('html').removeClass('swipeshow-grabbed');
+    },
+
+    // Returns the cycler.
+    _getCycler: function() {
+      var ss = this;
+      var options = this.options;
+
+      return new Cycler(ss.$slides, $.extend({}, options, {
+        autostart: false,
+        onactivate: $.proxy(this._onactivate, this),
+        onpause: $.proxy(this._onpause, this),
+        onstart: $.proxy(this._onstart, this)
+      }));
+    },
+
+    // On slideshow activate handler for Cycler.
+    _onactivate: function(current, i, prev, j) {
+      if (this.options.onactivate) this.options.onactivate(current, i, prev, j);
+
+      // Set classes
+      if (prev) $(prev).removeClass('active');
+      if (current) $(current).addClass('active');
+
+      // Move to the slide
+      this._moveToSlide(i);
+    },
+
+    // Moves to slide number `i`. (Internal)
+    // For external use, just use goto().
+    _moveToSlide: function(i) {
+      var width = this.$slideshow.width();
+      setOffset(this.$container, -1 * width * i, this.options.speed);
+    },
+
+    // On slideshow pause handler.
+    _onpause: function() {
+      if (this.options.onpause) this.options.onpause();
+      this.$slideshow
+        .addClass('paused')
+        .removeClass('running');
+    },
+
+    // On slideshow start handler.
+    _onstart: function() {
+      if (this.options.onstart) this.options.onstart();
+      this.$slideshow
+        .removeClass('paused')
+        .addClass('running');
+    },
+
+    // Add classes to $slideshow.
+    _addClasses: function() {
+      this.$slideshow.addClass('paused swipeshow-active');
+      this.$slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
+    },
+
+    // Binds events to buttons.
+    _bindButtons: function() {
+      var ss = this;
+
+      this.$next.on('click', function(e) {
+        e.preventDefault();
+        if (!ss.disabled) ss.next();
+      });
+
+      this.$previous.on('click', function(e) {
+        e.preventDefault();
+        if (!ss.disabled) ss.previous();
+      });
+    },
+
+    // Starts the slideshow initially.
+    _startSlideshow: function() {
+      var ss = this;
+      var $images = ss.$slideshow.find('img');
+
+      // If there are images, defer starting until images are loaded.
+      if ($images.length === 0) {
+        ss.start();
+      } else {
+        ss.disabled = true;
+        ss.$slideshow.addClass('disabled');
+
+        $images.onloadall(function() {
+          ss.disabled = false;
+          ss.$slideshow.removeClass('disabled');
+          ss.start();
+        });
+      }
+    },
+
+    // Re-adjusts the slideshow after resizing the window.
+    _bindResize: function() {
+      var ss = this;
+
+      $(window).on('resize'+ss.tag, function() {
+        var width = ss.$slideshow.width();
+
+        // Re-sit the current slide
+        setOffset(ss.$container, -1 * width * ss.cycler.current, 0);
+
+        // Reposition the CSS of the container and slides
+        ss._reposition();
+      });
+
+      $(window).trigger('resize'+ss.tag);
+    },
+
+    // Reposition the CSS of the container and slides
+    _reposition: function() {
+      var width = this.$slideshow.width();
+      var count = this.$slides.length;
+
+      this.$slides.css({ width: width });
+      this.$container.css({ width: width * count });
+      this.$slides.each(function(i) { $(this).css({ left: width * i }); });
+    },
+
+    // Binds pause-on-hover behavior.
+    _bindHoverPausing: function() {
+      // No need for this on touch-enabled browsers.
+      if (touchEnabled) return;
+
+      var ss = this;
+      var tag = ss.tag;
+      var hoverPaused = false;
+
+      ss.$slideshow.on('mouseenter'+tag, function() {
+        if (!ss.isStarted()) return;
+        hoverPaused = true;
+        ss.pause();
+      });
+
+      ss.$slideshow.on('mouseleave'+tag, function() {
+        if (!hoverPaused) return;
+        hoverPaused = false;
+        ss.start();
+      });
+    },
+
+    // Binds swiping behavior.
+    _bindSwipeEvents: function() {
+      var ss = this;
+      var $slideshow = ss.$slideshow;
+      var $container = ss.$container;
+      var c = ss.cycler;
+      var options = ss.options;
+      var tag = ss.tag;
+
+      // States
+      var moving = false;
+      var origin;
+      var start;
+      var delta;
+      var lastTouch;
+      var minDelta; // Minimum change for it to take effect.
+
+      var width; // widtih of the slideshow
+      var length = c.list.length;
+      var friction = options.friction;
+
+      // Store the tag so it can be unbound later.
+      $slideshow.data('swipeshow:tag', tag);
+
+      // Prevent dragging of the image.
+      $container.find('img').on('mousedown'+tag, function(e) {
+        e.preventDefault();
+      });
+
+      $container.on('touchstart'+tag + (options.mouse ? ' mousedown'+tag : ''), function(e) {
+        // Only prevent mouse clicks. This allows vertical scrolling on mobile.
+        // Do this before the sanity checks... you don't want the user to
+        // accidentally drag the <img>.
+        if (e.type === 'mousedown')
+          e.preventDefault();
+
+        if (ss.disabled) return;
+        if ($container.is(':animated')) $container.stop();
+
+        // Make some elements hard to swipe from.
+        if ($(e.target).is('button, a, [data-tappable]')) {
+          minDelta = 100;
+        } else {
+          minDelta = 0;
+        }
+
+        // Add classes.
+        $container.addClass('grabbed');
+        $('html').addClass('swipeshow-grabbed');
+
+        width  = $slideshow.width();
+        moving = true;
+        origin = { x: getX(e) };
+        start  = { x: getOffset($container), started: c.isStarted() };
+        delta  = 0;
+        lastTouch = null;
+
+        // Pause the slideshow, but resume it later.
+        if (start.started) c.pause();
+      });
+
+      $(document).on('touchmove'+tag + (options.mouse ? ' mousemove'+tag : ''), function(e) {
+        if (ss.disabled) return;
+        if ($container.is(':animated')) return;
+        if (!moving) return;
+
+        // X can sometimes be NaN because the touch event may not have any X/Y info.
+        var x = getX(e);
+        if (isNaN(x)) return;
+
+        delta = x - origin.x;
+
+        // When swiping was triggered on a button, it should be harder to swipe from.
+        if (Math.abs(delta) <= minDelta) delta = 0;
+
+        var target = start.x + delta;
+        var max = -1 * width * (length - 1);
+
+        // Only prevent scrolling when it's moved too far to the right/left
+        if (Math.abs(delta) > 3)
+          e.preventDefault();
+
+        // Have some friction when scrolling out of bounds.
+        if (target > 0) target *= friction;
+        if (target < max) target = max + (target - max) * friction;
+
+        // Record when it was last touched, so that when the finger is lifted, we
+        // know how long it's been since
+        lastTouch = +new Date();
+        
+        setOffset($container, target, 0);
+      });
+
+      $(document).on('touchend'+tag + (options.mouse ? ' mouseup'+tag : ''), function(e) {
+        if (ss.disabled) return;
+        if ($container.is(':animated')) return;
+        if (!moving) return;
+
+        var left  = getOffset($container);
+
+        // Set classes
+        $container.removeClass('grabbed');
+        $('html').removeClass('swipeshow-grabbed');
+
+        // Find out what slide it stopped to.
+        var index = -1 * Math.round(left / width);
+
+        // If the finger moved, but not enough to advance...
+        if (lastTouch && c.current === index) {
+          var timeDelta = +new Date() - lastTouch;
+
+          // If distance is far enough, and time is short enough.
+          // I just winged these magic numbers trying to compare the experience to iOS's Photo app.
+          if (Math.abs(delta) > 10 && timeDelta < 20) {
+            var sign = delta < 0 ? -1 : 1;
+            index -= sign;
+          }
+        }
+
+        if (index < 0) index = 0;
+        if (index > c.list.length-1) index = c.list.length-1;
+
+        // Switch to that slide.
+        c.goTo(index);
+
+        e.preventDefault();
+
+        // Restart the slideshow if it was already started before.
+        if (start.started) c.start();
+
+        // Reset.
+        moving = false;
+      });
+    }
+  };
+
+  $.fn.swipeshow = function(options) {
+    if (!options) options = {};
+
+    options = $.extend({}, Swipeshow.prototype.defaults, options);
 
     $(this).each(function() {
-      var $slideshow = $(this);
-      var $container = $slideshow.find('> .slides');
-      var $slides    = $container.find('> .slide');
-
       // Idempotency: don't do anything if it's already been initialized.
-      if ($slideshow.data('swipeshow')) return;
+      if ($(this).data('swipeshow')) return;
 
-      var width = $slideshow.width();
-
-      $slideshow.addClass('paused swipeshow-active');
-
-      // Use Cycler.
-      var c = new Cycler($slides, $.extend({}, options, {
-        autostart: false,
-        onactivate: function(current, i, prev, j) {
-          if (options.onactivate) options.onactivate(current, i, prev, j);
-
-          // Set classes
-          if (prev) $(prev).removeClass('active');
-          if (current) $(current).addClass('active');
-
-          // Move
-          setOffset($container, -1 * width * i, options.speed);
-        },
-        onpause: function() {
-          if (options.onpause) options.onpause();
-          $slideshow.addClass('paused').removeClass('running');
-        },
-        onstart: function() {
-          if (options.onstart) options.onstart();
-          $slideshow.removeClass('paused').addClass('running');
-        }
-
-      }));
-
-      // Auto-size the container.
-      $container.css({ width: width * $slides.length });
-
-      // Add classes.
-      $slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
-
-      // Defer starting until images are loaded.
-      if (options.autostart !== false) {
-        var $images = $slideshow.find('img');
-
-        if ($images.length > 0) {
-          c.disabled = true;
-          $slideshow.addClass('disabled');
-
-          $images.onloadall(function() {
-            c.disabled = false;
-            $slideshow.removeClass('disabled');
-            c.start();
-          });
-        } else {
-          c.start();
-        }
-      }
-
-      // Bind
-      bindSwipe($slideshow, $container, c, options);
-      bindHover($slideshow, c, options);
-
-      // Bind a "next slide" button.
-      var $next = options.$next || $slideshow.find('.next');
-      $next.on('click', function(e) {
-        e.preventDefault();
-        if (!c.disabled) c.next();
-      });
-
-      // Bind a "previous slide" button.
-      var $previous = options.$previous || $slideshow.find('.previous');
-      $previous.on('click', function(e) {
-        e.preventDefault();
-        if (!c.disabled) c.previous();
-      });
-
-      // Save the cycler for future use.
-      $slideshow.data('swipeshow', c);
+      var ss = new Swipeshow(this, options);
+      $(this).data('swipeshow', ss);
     });
 
     return $(this).data('swipeshow');
@@ -161,35 +424,10 @@
 
   // Unbinds everything.
   $.fn.unswipeshow = function() {
-    this.each(function() {
-      var $slideshow = $(this);
-      var $container = $slideshow.find('> .slides');
-      var $slides    = $container.find('> .slide');
-
-      var c = $slideshow.data('swipeshow');
-      var tag = $slideshow.data('swipeshow:tag');
-
-      if (c) {
-        // Kill the timer.
-        c.pause();
-
-        // Unbind the events based on their tag (eg, `swipeshow-1`).
-        $container.find('img').off(tag);
-        $container.off(tag);
-        $(document).off(tag);
-
-        // Unregister so that it can be initialized again later.
-        $slideshow.data('swipeshow', null);
-
-        // Remove magic classes
-        $slideshow.removeClass('running paused swipeshow-active touch no-touch');
-        $container.removeClass('gliding grabbed');
-        $slides.removeClass('active');
-        $('html').removeClass('swipeshow-grabbed');
-      }
+    return this.each(function() {
+      var ss = $(this).data('swipeshow');
+      if (ss) ss.unbind();
     });
-
-    return this;
   };
 
   var offsetTimer;
@@ -230,158 +468,6 @@
   // the stored value.
   function getOffset($el) {
     return $el.data('swipeshow:left') || 0;
-  }
-
-  // Binds swiping behavior.
-  function bindSwipe($slideshow, $container, c, options) {
-    var moving = false;
-    var origin;
-    var start;
-    var delta;
-    var lastTouch;
-    var minDelta; // Minimum change for it to take effect.
-
-    var width = $slideshow.width();
-    var length = c.list.length;
-    var friction = options.friction;
-
-    // Tags for the events (so they can be unbound later)
-    var tag = '.swipeshow.swipeshow-'+(++instances);
-
-    // Store the tag so it can be unbound later.
-    $slideshow.data('swipeshow:tag', tag);
-
-    // Prevent dragging of the image.
-    $container.find('img').on('mousedown'+tag, function(e) {
-      e.preventDefault();
-    });
-
-    $container.on('touchstart'+tag + (options.mouse ? ' mousedown'+tag : ''), function(e) {
-      // Only prevent mouse clicks. This allows vertical scrolling on mobile.
-      // Do this before the sanity checks... you don't want the user to
-      // accidentally drag the <img>.
-      if (e.type === 'mousedown')
-        e.preventDefault();
-
-      if (c.disabled) return;
-      if ($container.is(':animated')) $container.stop();
-
-      // Make some elements hard to swipe from.
-      if ($(e.target).is('button, a, [data-tappable]')) {
-        minDelta = 100;
-      } else {
-        minDelta = 0;
-      }
-
-      // Add classes.
-      $container.addClass('grabbed');
-      $('html').addClass('swipeshow-grabbed');
-
-      moving = true;
-      origin = { x: getX(e) };
-      start  = { x: getOffset($container), started: c.isStarted() };
-      delta  = 0;
-      lastTouch = null;
-
-      // Pause the slideshow, but resume it later.
-      if (start.started) c.pause();
-    });
-
-    $(document).on('touchmove'+tag + (options.mouse ? ' mousemove'+tag : ''), function(e) {
-      if (c.disabled) return;
-      if ($container.is(':animated')) return;
-      if (!moving) return;
-
-      // X can sometimes be NaN because the touch event may not have any X/Y info.
-      var x = getX(e);
-      if (isNaN(x)) return;
-
-      delta = x - origin.x;
-
-      // When swiping was triggered on a button, it should be harder to swipe from.
-      if (Math.abs(delta) <= minDelta) delta = 0;
-
-      var target = start.x + delta;
-      var max = -1 * width * (length - 1);
-
-      // Only prevent scrolling when it's moved too far to the right/left
-      if (Math.abs(delta) > 3)
-        e.preventDefault();
-
-      // Have some friction when scrolling out of bounds.
-      if (target > 0) target *= friction;
-      if (target < max) target = max + (target - max) * friction;
-
-      // Record when it was last touched, so that when the finger is lifted, we
-      // know how long it's been since
-      lastTouch = +new Date();
-      
-      setOffset($container, target, 0);
-    });
-
-    $(document).on('touchend'+tag + (options.mouse ? ' mouseup'+tag : ''), function(e) {
-      if (c.disabled) return;
-      if ($container.is(':animated')) return;
-      if (!moving) return;
-
-      var left  = getOffset($container);
-
-      // Set classes
-      $container.removeClass('grabbed');
-      $('html').removeClass('swipeshow-grabbed');
-
-      // Find out what slide it stopped to.
-      var index = -1 * Math.round(left / width);
-
-      // If the finger moved, but not enough to advance...
-      if (lastTouch && c.current === index) {
-        var timeDelta = +new Date() - lastTouch;
-
-        // If distance is far enough, and time is short enough.
-        // I just winged these magic numbers trying to compare the experience to iOS's Photo app.
-        if (Math.abs(delta) > 10 && timeDelta < 20) {
-          var sign = delta < 0 ? -1 : 1;
-          index -= sign;
-        }
-      }
-
-      if (index < 0) index = 0;
-      if (index > c.list.length-1) index = c.list.length-1;
-
-      // Switch to that slide.
-      c.goTo(index);
-
-      e.preventDefault();
-
-      // Restart the slideshow if it was already started before.
-      if (start.started) c.start();
-
-      // Reset.
-      moving = false;
-    });
-  }
-
-  // Binds pause-on-hover behavior.
-  function bindHover($slideshow, c, options) {
-    // No need for this on touch-enabled browsers.
-    if (touchEnabled) return;
-
-    var tag = $slideshow.data('swipeshow:tag');
-
-    var paused = false;
-    $slideshow.on('mouseenter'+tag, function() {
-      if (c.isStarted()) {
-        paused = true;
-        c.pause();
-      }
-    });
-
-    $slideshow.on('mouseleave'+tag, function() {
-      if (paused) {
-        paused = false;
-        c.start();
-      }
-    });
   }
 
   // Extracts the X from given event object. Works for mouse or touch events.

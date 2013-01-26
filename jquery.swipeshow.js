@@ -116,18 +116,6 @@
       // Add classes.
       $slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
 
-      // Resize thingie.
-      $(window).on('resize'+tag, function() {
-        var width = $slideshow.width();
-
-        // Re-sit the current slide
-        setOffset($container, -1 * width * c.current, 0);
-
-        // Reposition the CSS of the container and slides
-        reposition($slideshow, $container, $slides);
-      });
-      $(window).trigger('resize'+tag);
-
       // Defer starting until images are loaded.
       if (options.autostart !== false) {
         var $images = $slideshow.find('img');
@@ -146,9 +134,10 @@
         }
       }
 
-      // Bind
+      // Bind events.
       bindSwipe($slideshow, $container, c, options, tag);
       bindHover($slideshow, c, options);
+      bindResize($slideshow, $container, $slides, c, tag);
 
       // Bind a "next slide" button.
       var $next = options.$next || $slideshow.find('.next');
@@ -392,6 +381,20 @@
         c.start();
       }
     });
+  }
+
+  // Re-adjusts the slideshow after resizing the window.
+  function bindResize($slideshow, $container, $slides, c, tag) {
+    $(window).on('resize'+tag, function() {
+      var width = $slideshow.width();
+
+      // Re-sit the current slide
+      setOffset($container, -1 * width * c.current, 0);
+
+      // Reposition the CSS of the container and slides
+      reposition($slideshow, $container, $slides);
+    });
+    $(window).trigger('resize'+tag);
   }
 
   // Extracts the X from given event object. Works for mouse or touch events.

@@ -281,6 +281,7 @@
 
       this.$slides.css({ width: width });
       this.$container.css({ width: width * count });
+      this.$slides.css({ visibility: 'visible' });
       this.$slides.each(function(i) { $(this).css({ left: width * i }); });
     },
 

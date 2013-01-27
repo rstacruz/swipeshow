@@ -45,7 +45,7 @@
     <h1>Swipeshow</h1>
     <p>
       Drag it, or swipe it!
-      Best experienced on a touch-enabled device. Download:
+      Best experienced on a touch-enabled device. Download v<span class='version'></span>:
     </p>
     <p>
       <a class='btn' href="../jquery.swipeshow.min.js">JS</a>
@@ -62,6 +62,7 @@
   </div>
 
   <script>
+    $(".version").text($.swipeshow.version);
     $(".slideshow").swipeshow({ mouse: true, interval: 6000 });
   </script>
 </div>

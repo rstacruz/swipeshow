@@ -12,6 +12,7 @@ pages: \
 	pages/index.html \
 	pages/style.css \
 	pages/swipeshow.css \
+	pages/slideshow-theme.css \
 	pages/jquery.swipeshow.js \
 	pages/jquery.swipeshow.css \
 	pages/1.jpg \

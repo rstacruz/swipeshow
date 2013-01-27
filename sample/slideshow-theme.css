@@ -1,0 +1,128 @@
+/* Theme! */
+.slideshow {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
+  background: #555 url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/low_contrast_linen.png);
+  margin: 0 auto;
+}
+
+.slideshow .slides {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.slideshow .next,
+.slideshow .previous {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.0);
+  cursor: pointer;
+
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  text-align: center;
+
+  top: 0;
+
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  font-size: 14pt;
+  opacity: 0;
+
+  -webkit-transition: opacity 300ms linear;
+  -moz-transition: opacity 300ms linear;
+  -ms-transition: opacity 300ms linear;
+  -o-transition: opacity 300ms linear;
+  transition: opacity 300ms linear;
+}
+
+.slideshow:hover .next,
+.slideshow:hover .previous {
+  opacity: 1;
+  transition: none;
+}
+
+.slideshow .next:hover,
+.slideshow .previous:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.slideshow .next:active,
+.slideshow .previous:active {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.slideshow .previous {
+  left: 0;
+}
+
+.slideshow .next {
+  right: 0;
+}
+
+.slideshow .previous:before {
+  content: '\2039';
+}
+
+.slideshow .next:before {
+  content: '\203a';
+}
+
+.slideshow .dots,
+.slideshow .dot-item,
+.slideshow .dot {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  border: 0;
+  background: transparent;
+}
+
+.slideshow .dots {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  list-style: none;
+
+  font-size: 0;
+}
+
+.slideshow .dot-item {
+  list-style: none;
+  display: inline-block;
+
+  width: 18px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+
+  cursor: pointer;
+
+  opacity: 0.8;
+}
+
+.slideshow .dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 6px;
+  font-size: 0;
+
+  border: solid 1px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.slideshow .dot-item:hover .dot {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.slideshow .dot-item:active .dot,
+.slideshow .dot-item.active .dot {
+  background: white;
+}

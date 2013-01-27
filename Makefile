@@ -13,7 +13,7 @@ pages: \
 	pages/style.css \
 	pages/swipeshow.css \
 	pages/slideshow-theme.css \
-	pages/jquery.swipeshow.js \
+	pages/jquery.swipeshow.min.js \
 	pages/jquery.swipeshow.css \
 	pages/1.jpg \
 	pages/2.jpg \

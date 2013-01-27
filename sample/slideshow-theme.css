@@ -1,4 +1,19 @@
-/* Theme! */
+/* Theme!
+ *
+ * To use this:
+ *
+ *     <div class='slideshow swipeshow'>
+ *       <ul class='slides'>
+ *         <li class='slide'>...</li>
+ *         <li class='slide'>...</li>
+ *       </ul>
+ *
+ *       <button class='previous'></button>  <!-- Optional -->
+ *       <button class='next'></button>      <!-- Optional -->
+ *       <div class='dots'></div>            <!-- Optional -->
+ *     </div>
+ */
+
 .slideshow {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
   background: #555 url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/low_contrast_linen.png);

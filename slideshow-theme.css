@@ -133,11 +133,11 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.slideshow.no-touch .dot-item:hover .dot {
+.no-touch .dot-item:hover .dot {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 .slideshow .dot-item:active .dot,
 .slideshow .dot-item.active .dot {
-  background: white;
+  background-color: white;
 }

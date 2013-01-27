@@ -1,4 +1,7 @@
-/*! Swipeshow (c) 2013 Rico Sta. Cruz, MIT license. */
+/*! Swipeshow (c) 2013 Rico Sta. Cruz, MIT license.
+ *  http://ricostacruz.com/swipeshow
+ *  https://github.com/rstacruz/swipeshow
+ */
 
 (function($) {
 // Opinionated, touch-enabled simple slideshow using Cycler.js.

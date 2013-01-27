@@ -122,6 +122,43 @@ $(".slideshow").swipeshow({
 });
 ```
 
+Dots
+----
+
+To have dots, simply have a `.dots` container after the `.slides`:
+
+``` html
+<div class="slideshow">
+  <ul class="slides">
+    <li class="slide"> ... </il>
+    <li class="slide"> ... </li>
+    <li class="slide"> ... </li>
+  </ul>
+
+  <!-- optional controls: -->
+  <div class='dots'></div>
+</div>
+```
+
+They will be populated like so:
+
+``` html
+<div class='dots active'></div>
+  <button class='dot-item'><span class='dot' data-number='1'></button>
+  <button class='dot-item'><span class='dot' data-number='2'></button>
+  <button class='dot-item active'><span class='dot' data-number='3'></button>
+</div>
+```
+
+If you would prefer them to be elsewhere in your markup, just pass an object to 
+`$dots` in the options:
+
+``` js
+$(".slideshow").swipeshow({
+  $dots: $("div.dots")
+});
+```
+
 Controlling the slideshow
 -------------------------
 

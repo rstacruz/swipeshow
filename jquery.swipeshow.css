@@ -69,10 +69,13 @@ html.swipeshow-grabbed * {
   left: 0;
   width: 100%;
   height: 100%;
-  visibility: hidden;
 }
 
 /* First slide should be visible by default */
+.swipeshow .slide {
+  visibility: hidden;
+}
+
 .swipeshow .slide:first-child {
   visibility: visible;
 }

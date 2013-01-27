@@ -1,3 +1,10 @@
+v0.10.1 - Jan 27, 2013
+----------------------
+
+  * Slideshows now have default dimensions.
+  * New: Dots are implemented.
+  * New: There's a sample theme in sample/slideshow-theme.css.
+
 v0.10.0 - Jan 26, 2013
 ----------------------
 

@@ -34,9 +34,7 @@
 //
 //       $next:     $("button.next"),
 //       $previous: $("button.previous"),
-//
-//       // Not implemented yet:
-//       $pegs:     $("ul.pegs")
+//       $dots:     $("div.dots")
 //     });
 //
 //     $(".slideshow").swipeshow().next();
@@ -70,16 +68,19 @@
     this.$container = this.$slideshow.find('> .slides');
     this.$slides    = this.$container.find('> .slide');
     this.options    = options;
-    this.cycler     = this._getCycler();
     this.tag        = '.swipeshow.swipeshow-'+(++instances);
     this.disabled   = false;
 
     // Buttons
-    this.$next      = options.$next || this.$slideshow.find('.next');
-    this.$previous  = options.$previous || this.$slideshow.find('.previous');
+    this.$next      = getElement(this.$slideshow, options.$next, '.next', '~ .controls .next');
+    this.$previous  = getElement(this.$slideshow, options.$previous, '.previous', '~ .controls .previous');
+    this.$dots      = getElement(this.$slideshow, options.$dots, '.dots', '~ .controls .dots');
 
     this._addClasses();
     this._bindButtons();
+    this._buildDots();
+
+    this.cycler     = this._getCycler();
     if (options.autostart !== false) this._startSlideshow();
 
     // Bind events.
@@ -111,6 +112,7 @@
       var $slideshow = this.$slideshow;
       var $container = this.$container;
       var $slides    = this.$slides;
+      var $dots      = this.$dots;
       var tag = this.tag;
 
       // Kill the timer.
@@ -122,6 +124,9 @@
       $(document).off(tag);
       $(window).off(tag);
 
+      // Remove dots
+      if ($dots.length) $dots.html('');
+
       // Unregister so that it can be initialized again later.
       $slideshow.data('swipeshow', null);
 
@@ -129,6 +134,7 @@
       $slideshow.removeClass('running paused swipeshow-active touch no-touch');
       $container.removeClass('gliding grabbed');
       $slides.removeClass('active');
+      $dots.removeClass('active');
       $('html').removeClass('swipeshow-grabbed');
     },
 
@@ -152,6 +158,12 @@
       // Set classes
       if (prev) $(prev).removeClass('active');
       if (current) $(current).addClass('active');
+
+      // Dots
+      if (this.$dots.length) {
+        this.$dots.find('.dot-item.active').removeClass('active');
+        this.$dots.find('.dot-item[data-index="'+i+'"]').addClass('active');
+      }
 
       // Move to the slide
       this._moveToSlide(i);
@@ -184,6 +196,30 @@
     _addClasses: function() {
       this.$slideshow.addClass('paused swipeshow-active');
       this.$slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
+    },
+
+    _buildDots: function() {
+      var ss    = this;
+      var $dots = ss.$dots;
+      var tag   = ss.tag;
+
+      if (!$dots.length) return;
+
+      $dots.html('').addClass('active');
+
+      ss.$slides.each(function(i) {
+        $dots.append($(
+          "<button class='dot-item' data-index='"+i+"'>"+
+          "<span class='dot' data-number='"+(i+1)+"'></span>"+
+          "</button>"
+        ));
+      });
+
+      $dots.on('click'+tag, '.dot-item', function() {
+        var index = +($(this).data('index'));
+        ss.goTo(index);
+      });
+
     },
 
     // Binds events to buttons.
@@ -433,6 +469,25 @@
       if (ss) ss.unbind();
     });
   };
+
+  // Given a list of selectors, find one that matches and is based on a given `root`.
+  //
+  //     getElement($(".menu"), "a", "button");
+  //
+  function getElement(root) {
+    var arg;
+    for (var i=1; i < arguments.length; ++i) {
+      arg = arguments[i];
+      if (typeof arg === 'string') {
+        var $el = $(arg, root);
+        if ($el.length) return $el;
+      } else if (typeof arg === 'object' && arg.constructor === $ && arg.length) {
+        return arg;
+      }
+    }
+
+    return $();
+  }
 
   var offsetTimer;
 

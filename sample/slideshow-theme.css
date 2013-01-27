@@ -52,8 +52,8 @@
   transition: opacity 300ms linear;
 }
 
-.slideshow:hover .next,
-.slideshow:hover .previous {
+.slideshow.no-touch:hover .next,
+.slideshow.no-touch:hover .previous {
   opacity: 1;
   transition: none;
 }
@@ -133,7 +133,7 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.slideshow .dot-item:hover .dot {
+.slideshow.no-touch .dot-item:hover .dot {
   background-color: rgba(255, 255, 255, 0.2);
 }
 

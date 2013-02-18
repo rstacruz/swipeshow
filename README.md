@@ -63,7 +63,7 @@ Define the dimensions of your slideshow. (Keep in mind you can style a different
 
 ``` html
 <link rel='stylesheet' href='jquery.swipeshow.css'>
-<script src='jquery.swipeshow.css'></script>
+<script src='jquery.swipeshow.js'></script>
 ```
 
 ``` js

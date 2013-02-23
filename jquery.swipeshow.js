@@ -56,7 +56,7 @@
 
   $.swipeshow = {};
 
-  $.swipeshow.version = "0.10.1";
+  $.swipeshow.version = "0.10.2";
 
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
@@ -102,13 +102,14 @@
     pause:    function()  { this.cycler.pause(); return this; },
     start:    function()  { this.cycler.start(); return this; },
 
-    isStarted: function()  { return this.cycler.isStarted(); },
-    isPaused:  function()  { return this.cycler.isPaused(); },
+    isStarted: function()  { return this.cycler && this.cycler.isStarted(); },
+    isPaused:  function()  { return !this.isStarted(); },
 
     defaults: {
       speed: 400,
       friction: 0.3,
-      mouse: true
+      mouse: true,
+      swipeThreshold: { distance: 10, time: 400 }
     },
 
     unbind: function() {
@@ -425,9 +426,10 @@
         if (lastTouch && c.current === index) {
           var timeDelta = +new Date() - lastTouch;
 
+          var threshold = options.swipeThreshold;
           // If distance is far enough, and time is short enough.
           // I just winged these magic numbers trying to compare the experience to iOS's Photo app.
-          if (Math.abs(delta) > 10 && timeDelta < 20) {
+          if (Math.abs(delta) > threshold.distance && timeDelta < threshold.time) {
             var sign = delta < 0 ? -1 : 1;
             index -= sign;
           }

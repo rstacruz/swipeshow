@@ -1,3 +1,9 @@
+v0.10.2 - Feb 23, 2013
+----------------------
+
+  * Added `swipeThreshold` option to allow adjusting the threshold for swipes.
+  * Fix visibility of first slide.
+
 v0.10.1 - Jan 27, 2013
 ----------------------
 

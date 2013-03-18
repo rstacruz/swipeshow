@@ -56,7 +56,7 @@
 
   $.swipeshow = {};
 
-  $.swipeshow.version = "0.10.2";
+  $.swipeshow.version = "0.10.3";
 
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
@@ -761,4 +761,4 @@
   };
 
   window.Cycler = Cycler;
-})();
+})(jQuery);

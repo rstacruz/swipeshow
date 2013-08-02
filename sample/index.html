@@ -62,8 +62,10 @@
   </div>
 
   <script>
-    $(".version").text($.swipeshow.version);
-    $(".slideshow").swipeshow({ mouse: true, interval: 6000 });
+    (function($) {
+      $(".version").text($.swipeshow.version);
+      $(".slideshow").swipeshow({ mouse: true, interval: 6000 });
+    })(jQuery);
   </script>
 </div>
 </body>

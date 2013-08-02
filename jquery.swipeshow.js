@@ -234,7 +234,7 @@
       var tag = ss.tag;
       var RIGHT = 39, LEFT = 37;
 
-      $(document).on('keydown'+tag, function(e) {
+      $(document).on('keyup'+tag, function(e) {
         if (e.keyCode == RIGHT)
           ss.next();
         else if (e.keyCode == LEFT)

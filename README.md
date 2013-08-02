@@ -85,6 +85,7 @@ $(".slideshow").swipeshow({
   speed: 700,         /* Animation speed (ms) */
   friction: 0.3,      /* Bounce-back behavior; use `0` to disable */
   mouse: true,        /* enable mouse dragging controls */
+  keys: true,         /* enable left/right keyboard keys */
 
   onactivate: function(){},
   onpause: function(){},

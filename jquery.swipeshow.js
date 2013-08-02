@@ -31,6 +31,7 @@
 //       speed: 700,         /* Animation speed (ms) */
 //       friction: 0.3,      /* What happens when you swipe out of bounds? */
 //       mouse: true,        /* enable mouse dragging controls? */
+//       keys: true,
 //
 //       onactivate: function(){},
 //       onpause: function(){},
@@ -82,6 +83,7 @@
     this._addClasses();
     this._bindButtons();
     this._buildDots();
+    if (options.keys) this._bindKeys();
 
     this.cycler     = this._getCycler();
     if (options.autostart !== false) this._startSlideshow();
@@ -109,6 +111,7 @@
       speed: 400,
       friction: 0.3,
       mouse: true,
+      keys: true,
       swipeThreshold: { distance: 10, time: 400 }
     },
 
@@ -224,6 +227,19 @@
         ss.goTo(index);
       });
 
+    },
+
+    _bindKeys: function() {
+      var ss = this;
+      var tag = ss.tag;
+      var RIGHT = 39, LEFT = 37;
+
+      $(document).on('keydown'+tag, function(e) {
+        if (e.keyCode == RIGHT)
+          ss.next();
+        else if (e.keyCode == LEFT)
+          ss.previous();
+      });
     },
 
     // Binds events to buttons.

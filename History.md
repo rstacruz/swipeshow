@@ -1,3 +1,9 @@
+v0.10.3 - Aug 2, 2013
+---------------------
+
+  * Add support for keyboard keys (left and right). Disable it with `keys: 
+  false`
+
 v0.10.2 - Feb 23, 2013
 ----------------------
 

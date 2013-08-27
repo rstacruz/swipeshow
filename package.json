@@ -1,0 +1,16 @@
+{
+  "name": "swipeshow",
+  "version": "0.10.3",
+  "description": "The unassuming touch-enabled JavaScript slideshow.",
+  "main": "jquery.swipeshow.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/milesmatthias/swipeshow.git"
+  },
+  "author": "rstacruz",
+  "license": "MIT",
+  "readmeFilename": "Readme.md",
+  "bugs": {
+    "url": "https://github.com/milesmatthias/swipeshow/issues"
+  }
+}

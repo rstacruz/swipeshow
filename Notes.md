@@ -12,7 +12,7 @@ To regenerate .min.js:
 
 To bump version:
 
-    $ bump jquery.swipeshow.js
+    $ bump jquery.swipeshow.js *.json
     
 Or manually:
 

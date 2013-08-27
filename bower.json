@@ -1,0 +1,26 @@
+{
+  "name": "swipeshow",
+  "version": "0.10.3",
+  "keywords": [
+    "slideshow",
+    "swipe",
+    "images",
+    "gallery"
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "license": "MIT",
+  "main": "jquery.swipeshow.js",
+  "scripts": [
+    "jquery.swipeshow.js"
+  ],
+  "styles": [
+    "jquery.swipeshow.css"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}

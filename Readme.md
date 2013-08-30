@@ -92,6 +92,13 @@ $(".slideshow").swipeshow({
 });
 ```
 
+The ```onactivate``` hook is called when you first initialize swipeshow, and again each time a swipe event occurs. The method receives the following arguments:
+
+  * current slide (DOM object)
+  * current slide index
+  * previous slide (DOM object)
+  * previous slide index
+
 Next/previous buttons
 ---------------------
 

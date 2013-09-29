@@ -32,12 +32,14 @@ below). Then just fire `$('...').swipeshow()`.
 
 ### HTML markup
 
+Simply create an element that includes the class `swipeshow` and contains some
+slides.
+
 Swipeshow goes by the assumption that your slideshow element looks like
-`.slides > .slide`. You are free to put whatever you want inside `.slide`, or even
-`.swideshow`!
+`.slides > .slide`. You are free to put other elements inside `.slide` or `.swipeshow`.
 
 ``` html
-<div class="swipeshow">
+<div class="my-gallery swipeshow">
   <ul class="slides">
     <li class="slide"> ... </il>
     <li class="slide"> ... </li>
@@ -46,13 +48,16 @@ Swipeshow goes by the assumption that your slideshow element looks like
 </div>
 ```
 
+In this example, we used the class `my-gallery swipeshow`: where `my-gallery`
+is a unique name we gave our slideshow so we can style it later.
+
 ### CSS
 
-Define the dimensions of your slideshow. (Keep in mind you can style a different 
-    class!) You can use percent-based widths (`width: 100%`) if you like.
+Define the dimensions of your slideshow. For responsive layouts, you may
+also use percent-based widths (`width: 100%`).
 
 ``` css
-.swipeshow {
+.my-gallery {
   width: 200px;
   height: 200px; }
 ```
@@ -68,7 +73,7 @@ Define the dimensions of your slideshow. (Keep in mind you can style a different
 
 ``` js
 $(function() {
-  $(".slideshow").swipeshow();
+  $(".my-gallery").swipeshow();
 });
 ```
 
@@ -78,7 +83,7 @@ Options
 All these options are optional.
 
 ``` js
-$(".slideshow").swipeshow({
+$(".my-gallery").swipeshow({
   autostart: true,    /* Set to `false` to keep it steady */
   interval: 3000,     /* Time between switching slides (ms) */
   initial: 0,         /* First slide's index */
@@ -95,12 +100,12 @@ $(".slideshow").swipeshow({
 Next/previous buttons
 ---------------------
 
-Add some buttons with the class `.next` and `.previous` inside `.slideshow`.
+Add some buttons with the class `.next` and `.previous` inside `.swipeshow`.
 They will work as expected.
 (style them yourself)
 
 ``` html
-<div class="slideshow">
+<div class="my-gallery swipeshow">
   <ul class="slides">
     <li class="slide"> ... </il>
     <li class="slide"> ... </li>
@@ -117,7 +122,7 @@ If you prefer them to be elsewhere, you can pass them as jQuery objects to
 the options:
 
 ``` js
-$(".slideshow").swipeshow({
+$(".my-gallery").swipeshow({
   $next: $("button.next"),
   $previous: $("button.previous")
 });
@@ -129,7 +134,7 @@ Dots
 To have dots, simply have a `.dots` container after the `.slides`:
 
 ``` html
-<div class="slideshow">
+<div class="my-gallery swipeshow">
   <ul class="slides">
     <li class="slide"> ... </il>
     <li class="slide"> ... </li>
@@ -155,7 +160,7 @@ If you would prefer them to be elsewhere in your markup, just pass an object to
 `$dots` in the options:
 
 ``` js
-$(".slideshow").swipeshow({
+$(".my-gallery").swipeshow({
   $dots: $("div.dots")
 });
 ```
@@ -163,15 +168,15 @@ $(".slideshow").swipeshow({
 Controlling the slideshow
 -------------------------
 
-Access them using `$(".slideshow").swipeshow()`:
+Access them using `$(".my-gallery").swipeshow()`:
 
 ``` js
-$(".slideshow").swipeshow().next();
-$(".slideshow").swipeshow().previous();
-$(".slideshow").swipeshow().goTo(2);
+$(".my-gallery").swipeshow().next();
+$(".my-gallery").swipeshow().previous();
+$(".my-gallery").swipeshow().goTo(2);
 
-$(".slideshow").swipeshow().pause();
-$(".slideshow").swipeshow().start();
+$(".my-gallery").swipeshow().pause();
+$(".my-gallery").swipeshow().start();
 ```
 
 Magic classes
@@ -180,7 +185,7 @@ Magic classes
 Your markup gets additional CSS classes depending on things. This allows you to 
 style more stuff via CSS.
 
- - `.slideshow`
+ - `.swipeshow`
    - has the `touch` class when touch is on, or `no-touch` on desktops.
    - has `running` when the slideshow is auto-advancing.
    - has `paused` when the slideshow is paused (like on hover).
@@ -199,7 +204,7 @@ Unbinding Swipeshow
 You can destroy a Swipeshow by doing:
 
 ``` js
-$(".slideshow").unswipeshow();
+$(".my-gallery").unswipeshow();
 ```
 
 This is different from `.swipeshow().pause()` in that it unbinds all events and

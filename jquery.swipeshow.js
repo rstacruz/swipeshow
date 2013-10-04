@@ -64,6 +64,13 @@
 
   var touchEnabled = ('ontouchstart' in document.documentElement);
 
+  // Checks for 3d support
+  var has3d = (function() {
+    var div = $("<div>").appendTo("body");
+    div.css('transform', 'translate3d(0,0,0)');
+    return div.css('transform') !== '';
+  });
+
   // Count instances.
   var instances = 0;
 
@@ -519,9 +526,9 @@
     $el.data('swipeshow:left', left);
     if (transitions) {
       if (speed === 0) {
-        $el.css({ transform: 'translate3d('+left+'px,0,0)', transition: 'none' });
+        $el.css({ transform: translate(left, 0), transition: 'none' });
       } else {
-        $el.css({ transform: 'translate3d('+left+'px,0,0)', transition: 'all '+speed+'ms ease' });
+        $el.css({ transform: translate(left, 0), transition: 'all '+speed+'ms ease' });
       }
     } else {
       if (speed === 0) {
@@ -541,6 +548,14 @@
       $el.removeClass('gliding');
       offsetTimer = undefined;
     }, speed);
+  }
+
+  function translate(x,y) {
+    if (has3d) {
+      return 'translate3d('+x+'px,'+y+'px,0)';
+    } else {
+      return 'translate('+x+'px,'+y+'px)';
+    }
   }
 
   // Find the X offset of the container ('.slides').

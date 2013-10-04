@@ -1,6 +1,6 @@
 {
   "name": "swipeshow",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "The unassuming touch-enabled JavaScript slideshow.",
   "main": "jquery.swipeshow.min.js",
   "repository": {

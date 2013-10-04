@@ -5,12 +5,12 @@
   "main": "jquery.swipeshow.min.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/milesmatthias/swipeshow.git"
+    "url": "git://github.com/rstacruz/swipeshow.git"
   },
   "author": "rstacruz",
   "license": "MIT",
   "readmeFilename": "Readme.md",
   "bugs": {
-    "url": "https://github.com/milesmatthias/swipeshow/issues"
+    "url": "https://github.com/rstacruz/swipeshow/issues"
   }
 }

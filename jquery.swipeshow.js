@@ -66,10 +66,10 @@
 
   // Checks for 3d support
   var has3d = (function() {
-    var div = $("<div>").appendTo("body");
+    var div = $("<div>");
     div.css('transform', 'translate3d(0,0,0)');
     return div.css('transform') !== '';
-  });
+  })();
 
   // Count instances.
   var instances = 0;

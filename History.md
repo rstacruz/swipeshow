@@ -1,3 +1,12 @@
+v0.10.4 / Oct 4, 2013
+---------------------
+
+ * Support browsers without translate3d (eg, Opera).
+ * Docs: document the onactivate hook. (@mikefowler, #10)
+ * Allow usage as an NPM package. (@milesmatthias, #8)
+ * Docs: update to be less ambiguous. (#11)
+ * Bower support.
+
 v0.10.3 - Aug 2, 2013
 ---------------------
 

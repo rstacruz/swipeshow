@@ -57,7 +57,7 @@
 
   $.swipeshow = {};
 
-  $.swipeshow.version = "0.10.3";
+  $.swipeshow.version = "0.10.4";
 
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
@@ -66,10 +66,10 @@
 
   // Checks for 3d support
   var has3d = (function() {
-    var div = $("<div>").appendTo("body");
+    var div = $("<div>");
     div.css('transform', 'translate3d(0,0,0)');
     return div.css('transform') !== '';
-  });
+  })();
 
   // Count instances.
   var instances = 0;

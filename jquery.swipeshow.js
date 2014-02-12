@@ -3,57 +3,60 @@
  *  https://github.com/rstacruz/swipeshow
  */
 
-(function($) {
-// Opinionated, touch-enabled simple slideshow using Cycler.js.
-//
-//     <div class="slideshow">
-//       <ul class="slides">
-//         <li class="slide"> ... </il>
-//         <li class="slide"> ... </li>
-//         <li class="slide"> ... </li>
-//       </ul>
-//     
-//       <!-- optional controls: -->
-//       <button class="next"></button>
-//       <button class="previous"></button>
-//     </div>
-//
-// To use:
-//
-//     $(".slideshow").swipeshow();
-//
-// Options (all of these are optional):
-//
-//     $(".slideshow").swipeshow({
-//       autostart: true,
-//       interval: 3000,     /* Time between movement (ms) */
-//       initial: 0,         /* First slide's index */
-//       speed: 700,         /* Animation speed (ms) */
-//       friction: 0.3,      /* What happens when you swipe out of bounds? */
-//       mouse: true,        /* enable mouse dragging controls? */
-//       keys: true,
-//
-//       onactivate: function(){},
-//       onpause: function(){},
-//
-//       $next:     $("button.next"),
-//       $previous: $("button.previous"),
-//       $dots:     $("div.dots")
-//     });
-//
-//     $(".slideshow").swipeshow().next();
-//     $(".slideshow").swipeshow().previous();
-//     $(".slideshow").swipeshow().goTo(2);
-//
-//     $(".slideshow").swipeshow().pause();
-//     $(".slideshow").swipeshow().start();
-//
-// Assumptions it makes:
-//
-//  - Markup is like above (`.slideshow > .slides > .slide`).
-//  - Buttons (optional), by default, will be found in `.slideshow > .next` (and `.previous`)
-//  - If there are images inside the slides, it will wait to load them before
-//    starting the slideshow.
+;(function($){
+
+/**
+ * Opinionated, touch-enabled simple slideshow using Cycler.js.
+ *
+ *     <div class="slideshow">
+ *       <ul class="slides">
+ *         <li class="slide"> ... </il>
+ *         <li class="slide"> ... </li>
+ *         <li class="slide"> ... </li>
+ *       </ul>
+ *     
+ *       <!-- optional controls: -->
+ *       <button class="next"></button>
+ *       <button class="previous"></button>
+ *     </div>
+ *
+ * To use:
+ *
+ *     $(".slideshow").swipeshow();
+ *
+ * Options (all of these are optional):
+ *
+ *     $(".slideshow").swipeshow({
+ *       autostart: true,
+ *       interval: 3000,     // Time between movement (ms)
+ *       initial: 0,         // First slide's index
+ *       speed: 700,         // Animation speed (ms)
+ *       friction: 0.3,      // What happens when you swipe out of bounds?
+ *       mouse: true,        // enable mouse dragging controls?
+ *       keys: true,
+ *
+ *       onactivate: function(){},
+ *       onpause: function(){},
+ *
+ *       $next:     $("button.next"),
+ *       $previous: $("button.previous"),
+ *       $dots:     $("div.dots")
+ *     });
+ *
+ *     $(".slideshow").swipeshow().next();
+ *     $(".slideshow").swipeshow().previous();
+ *     $(".slideshow").swipeshow().goTo(2);
+ *
+ *     $(".slideshow").swipeshow().pause();
+ *     $(".slideshow").swipeshow().start();
+ *
+ * Assumptions it makes:
+ *
+ *  - Markup is like above (`.slideshow > .slides > .slide`).
+ *  - Buttons (optional), by default, will be found in `.slideshow > .next` (and `.previous`)
+ *  - If there are images inside the slides, it will wait to load them before
+ *    starting the slideshow.
+ */
 
   $.swipeshow = {};
 
@@ -152,7 +155,10 @@
       $('html').removeClass('swipeshow-grabbed');
     },
 
-    // Returns the cycler.
+    /**
+     * Returns the cycler instance.
+     */
+
     _getCycler: function() {
       var ss = this;
       var options = this.options;
@@ -165,7 +171,10 @@
       }));
     },
 
-    // On slideshow activate handler for Cycler.
+    /**
+     * On slideshow activate handler for Cycler.
+     */
+
     _onactivate: function(current, i, prev, j) {
       if (this.options.onactivate) this.options.onactivate(current, i, prev, j);
 
@@ -183,14 +192,20 @@
       this._moveToSlide(i);
     },
 
-    // Moves to slide number `i`. (Internal)
-    // For external use, just use goto().
+    /**
+     * Moves to slide number `i`. (Internal)
+     * For external use, just use goto().
+     */
+
     _moveToSlide: function(i) {
       var width = this.$slideshow.width();
       setOffset(this.$container, -1 * width * i, this.options.speed);
     },
 
-    // On slideshow pause handler.
+    /**
+     * On slideshow pause handler. (Internal)
+     */
+
     _onpause: function() {
       if (this.options.onpause) this.options.onpause();
       this.$slideshow
@@ -198,7 +213,10 @@
         .removeClass('running');
     },
 
-    // On slideshow start handler.
+    /**
+     * On slideshow start handler. (Internal)
+     */
+
     _onstart: function() {
       if (this.options.onstart) this.options.onstart();
       this.$slideshow
@@ -206,7 +224,10 @@
         .addClass('running');
     },
 
-    // Add classes to $slideshow.
+    /**
+     * Add classes to $slideshow. (Internal)
+     */
+
     _addClasses: function() {
       this.$slideshow.addClass('paused swipeshow-active');
       this.$slideshow.addClass(touchEnabled ? 'touch' : 'no-touch');
@@ -264,7 +285,10 @@
       });
     },
 
-    // Starts the slideshow initially.
+    /**
+     * Starts the slideshow initially. (Internal)
+     */
+
     _startSlideshow: function() {
       var ss = this;
       var $images = ss.$slideshow.find('img');
@@ -284,7 +308,10 @@
       }
     },
 
-    // Re-adjusts the slideshow after resizing the window.
+    /**
+     * Re-adjusts the slideshow after resizing the window. (Internal)
+     */
+
     _bindResize: function() {
       var ss = this;
 
@@ -301,7 +328,10 @@
       $(window).trigger('resize'+ss.tag);
     },
 
-    // Reposition the CSS of the container and slides
+    /**
+     * Reposition the CSS of the container and slides. (Internal)
+     */
+
     _reposition: function() {
       var width = this.$slideshow.width();
       var count = this.$slides.length;
@@ -312,7 +342,10 @@
       this.$slides.each(function(i) { $(this).css({ left: width * i }); });
     },
 
-    // Binds pause-on-hover behavior.
+    /**
+     * Binds pause-on-hover behavior. (Internal)
+     */
+
     _bindHoverPausing: function() {
       // No need for this on touch-enabled browsers.
       if (touchEnabled) return;
@@ -334,7 +367,10 @@
       });
     },
 
-    // Binds swiping behavior.
+    /**
+     * Binds swiping behavior. (Internal)
+     */
+
     _bindSwipeEvents: function() {
       var ss = this;
       var $slideshow = ss.$slideshow;
@@ -495,7 +531,10 @@
     return $(this).data('swipeshow');
   };
 
-  // Unbinds everything.
+  /**
+   * Unbinds everything.
+   */
+
   $.fn.unswipeshow = function() {
     return this.each(function() {
       var ss = $(this).data('swipeshow');
@@ -503,10 +542,12 @@
     });
   };
 
-  // Given a list of selectors, find one that matches and is based on a given `root`.
-  //
-  //     getElement($(".menu"), "a", "button");
-  //
+  /**
+   * Given a list of selectors, find one that matches and is based on a given `root`.
+   *
+   *     getElement($(".menu"), "a", "button");
+   */
+
   function getElement(root) {
     var arg;
     for (var i=1; i < arguments.length; ++i) {
@@ -524,8 +565,11 @@
 
   var offsetTimer;
 
-  // Sets the X offset of the given element `$el` (usually `.slides`).
-  // `speed` is in milliseconds. If `speed` is `0`, it happens instantly.
+  /**
+   * Sets the X offset of the given element `$el` (usually `.slides`).
+   * `speed` is in milliseconds. If `speed` is `0`, it happens instantly.
+   */
+
   function setOffset($el, left, speed) {
     $el.data('swipeshow:left', left);
     if (transitions) {
@@ -562,15 +606,21 @@
     }
   }
 
-  // Find the X offset of the container ('.slides').
-  // Attempting to parse it out of the transform value ("matrix(1, 0, 0, 1,
-  // -200, 0)") never seems to yield the right offset, so let's just go with
-  // the stored value.
+  /**
+   * Find the X offset of the container ('.slides').
+   * Attempting to parse it out of the transform value ("matrix(1, 0, 0, 1,
+   * -200, 0)") never seems to yield the right offset, so let's just go with
+   * the stored value.
+   */
+
   function getOffset($el) {
     return $el.data('swipeshow:left') || 0;
   }
 
-  // Extracts the X from given event object. Works for mouse or touch events.
+  /**
+   * Extracts the X from given event object. Works for mouse or touch events.
+   */
+
   function getX(e) {
     if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0])
       return e.originalEvent.touches[0].clientX;
@@ -622,108 +672,110 @@
 
 /*! Cycler (c) 2012-2013 Rico Sta. Cruz, MIT license. */
 
-// Cycles between a given `list` at a given `interval`.
-// Simply define an `onactivate` hook.
-//
-// All the options are optional except `onactivate`.
-//
-//     c = new Cycler(list, {
-//       interval: 3000,
-//       initial: 0, /* first slide's index */
-//       onactivate: function(current, index, prev, prevIndex) { ... }, /* Required */
-//       onstart: function() { ... },
-//       onpause: function() { ... }
-//     });
-//
-// Slideshow example
-// -----------------
-//
-// The most common usecase of Cycler is to make your own carousel/slideshow
-// implementation. Here's how you might make one:
-//
-//     var $parent = $(".slideshow");
-//     var $images = $parent.find("img");
-//
-//     var c = new Cycler($images, {
-//       interval: 5000,
-//       onactivate: function(current) {
-//         $images.hide();
-//         $(current).show();
-//       }
-//     });
-//
-//     // Custom controls example
-//     $parent.find("button.next").on("click", function() { c.next(); });
-//     $parent.find("button.prev").on("click", function() { c.previous(); });
-//
-//     // Pause on hover example
-//     $parent.on("hover", function() { c.pause(); }, function() { c.start(); });
-//
-// Navigating
-// ----------
-//
-// You can switch by slides using `next()`, `previous()` and `goTo()`. When
-// these are invoked, the interval timer is reset (that is, it will take 3000ms
-// again to switch to the next slide).
-//
-// If these are called when the slideshow is paused, it should remain paused.
-//
-// Doing this will trigger the `onactivate` callback.
-//
-//     c.next();
-//     c.previous();
-//     c.goTo(0);
-//
-// The onactivate hook
-// -------------------
-//
-// This is where the magic happens. It's called everytime a new slide is activated.
-//
-// The callback takes 4 arguments: the current list item (`current`) + its
-// index in the list (`index`), and the previous item (`prev`) + its index (`prevIndex`).
-//
-//     var list = [ 'Apple', 'Banana', 'Cherry' ];
-//
-//     new Cycler(list, {
-//       onactivate: function(current, index, prev, prevIndex) {
-//         console.log("Switching from", prev, "to", current);
-//         console.log("(from", prevIndex, "to", index, ")");
-//       };
-//     });
-//
-//     // Result:
-//     //
-//     // Switching from null to "Apple" (from null to 0)
-//     // Switching from "Apple" to "Banana" (from 0 to 1)
-//     // Switching from "Banana" to "Cherry" (from 1 to 2)
-//     // Switching from "Cherry" to "Apple" (from 2 to 0)
-//
-// Pausing
-// -------
-//
-// You can pause and unpause the slideshow with `pause()` and `start()`. Note
-// that calling `start()` will reset the interval timer.
-//
-// These will call the `onpause` and `onstart` callbacks respectively.
-//
-//     c.pause();
-//     c.start();
-//
-// You can pass `true` as an argument (eg, `c.pause(true)`) to these to supress
-// triggering the callbacks.
-//
-// Properties
-// ----------
-//
-//     c.current    /* Numeric index of current item */
-//     c.list       /* The list being cycled */
-//
-// Chainability
-// ------------
-//
-// All the methods are chainable, too, so you can do:
-//
-//     c.next().pause();
+/*
+ * Cycles between a given `list` at a given `interval`.
+ * Simply define an `onactivate` hook.
+ *
+ * All the options are optional except `onactivate`.
+ *
+ *     c = new Cycler(list, {
+ *       interval: 3000,
+ *       initial: 0, // first slide's index
+ *       onactivate: function(current, index, prev, prevIndex) { ... }, // Required
+ *       onstart: function() { ... },
+ *       onpause: function() { ... }
+ *     });
+ *
+ * Slideshow example
+ * -----------------
+ *
+ * The most common usecase of Cycler is to make your own carousel/slideshow
+ * implementation. Here's how you might make one:
+ *
+ *     var $parent = $(".slideshow");
+ *     var $images = $parent.find("img");
+ *
+ *     var c = new Cycler($images, {
+ *       interval: 5000,
+ *       onactivate: function(current) {
+ *         $images.hide();
+ *         $(current).show();
+ *       }
+ *     });
+ *
+ *     // Custom controls example
+ *     $parent.find("button.next").on("click", function() { c.next(); });
+ *     $parent.find("button.prev").on("click", function() { c.previous(); });
+ *
+ *     // Pause on hover example
+ *     $parent.on("hover", function() { c.pause(); }, function() { c.start(); });
+ *
+ * Navigating
+ * ----------
+ *
+ * You can switch by slides using `next()`, `previous()` and `goTo()`. When
+ * these are invoked, the interval timer is reset (that is, it will take 3000ms
+ * again to switch to the next slide).
+ *
+ * If these are called when the slideshow is paused, it should remain paused.
+ *
+ * Doing this will trigger the `onactivate` callback.
+ *
+ *     c.next();
+ *     c.previous();
+ *     c.goTo(0);
+ *
+ * The onactivate hook
+ * -------------------
+ *
+ * This is where the magic happens. It's called everytime a new slide is activated.
+ *
+ * The callback takes 4 arguments: the current list item (`current`) + its
+ * index in the list (`index`), and the previous item (`prev`) + its index (`prevIndex`).
+ *
+ *     var list = [ 'Apple', 'Banana', 'Cherry' ];
+ *
+ *     new Cycler(list, {
+ *       onactivate: function(current, index, prev, prevIndex) {
+ *         console.log("Switching from", prev, "to", current);
+ *         console.log("(from", prevIndex, "to", index, ")");
+ *       };
+ *     });
+ *
+ *     // Result:
+ *     //
+ *     // Switching from null to "Apple" (from null to 0)
+ *     // Switching from "Apple" to "Banana" (from 0 to 1)
+ *     // Switching from "Banana" to "Cherry" (from 1 to 2)
+ *     // Switching from "Cherry" to "Apple" (from 2 to 0)
+ *
+ * Pausing
+ * -------
+ *
+ * You can pause and unpause the slideshow with `pause()` and `start()`. Note
+ * that calling `start()` will reset the interval timer.
+ *
+ * These will call the `onpause` and `onstart` callbacks respectively.
+ *
+ *     c.pause();
+ *     c.start();
+ *
+ * You can pass `true` as an argument (eg, `c.pause(true)`) to these to supress
+ * triggering the callbacks.
+ *
+ * Properties
+ * ----------
+ *
+ *     c.current    // Numeric index of current item
+ *     c.list       // The list being cycled
+ *
+ * Chainability
+ * ------------
+ *
+ * All the methods are chainable, too, so you can do:
+ *
+ *     c.next().pause();
+ */
 
 (function() {
   function Cycler(list, options) {

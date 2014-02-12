@@ -1,6 +1,13 @@
 Development notes
 -----------------
 
+How its set up:
+
+ - published via __Bower__
+ - tested via __mocha__ + __jsdom__ (see `test/`)
+ - minified via __uglifyjs__ (see `Makefile`)
+ - clone the site into `pages/`, which is managed via `Makefile`
+
 Tests via JSDom:
 
     $ npm install

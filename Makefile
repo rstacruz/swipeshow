@@ -6,7 +6,7 @@ all: \
 	pages \
 
 %.min.js: %.js
-	uglifyjs "$<" > "$@"
+	./node_modules/.bin/uglifyjs "$<" > "$@"
 
 pages: \
 	pages/index.html \

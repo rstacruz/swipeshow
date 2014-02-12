@@ -23,6 +23,7 @@
     "coffee-script": "*",
     "jsdom": "*",
     "sinon": "*",
-    "chai-jquery": "~1.2.1"
+    "chai-jquery": "~1.2.1",
+    "uglify-js": "~2.4.12"
   }
 }

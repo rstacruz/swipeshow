@@ -364,6 +364,9 @@
       });
 
       $container.on('touchstart'+tag + (options.mouse ? ' mousedown'+tag : ''), function(e) {
+        // Don't do anything if flash.
+        if (isFlash(e)) return;
+
         // Only prevent mouse clicks. This allows vertical scrolling on mobile.
         // Do this before the sanity checks... you don't want the user to
         // accidentally drag the <img>.
@@ -435,6 +438,7 @@
         if (ss.disabled) return;
         if ($container.is(':animated')) return;
         if (!moving) return;
+        if (isFlash(e)) return;
 
         var left  = getOffset($container);
 
@@ -574,6 +578,16 @@
     if (e.clientX)
       return e.clientX;
   }
+
+  /**
+   * Checks if a given event is triggered in a Flash video.
+   * https://github.com/rstacruz/swipeshow/issues/14
+   */
+
+  function isFlash(e) {
+    return $(e.target).is('embed, object');
+  }
+
 })(jQuery);
 
 // ============================================================================

@@ -1,6 +1,12 @@
 Development notes
 -----------------
 
+Tests via JSDom:
+
+    $ npm install
+    $ npm test
+    $ npm run autotest
+
 Set up Github pages:
 
     $ git clone git@github.com:rstacruz/swipeshow.git --branch gh-pages pages
@@ -13,6 +19,7 @@ To regenerate .min.js:
 To bump version:
 
     $ bump jquery.swipeshow.js *.json
+    # github.com/marksteve/bump
     
 Or manually:
 

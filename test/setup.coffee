@@ -14,3 +14,4 @@ Dom.scripts =
  'swipeshow': read('jquery.swipeshow.js')
 
 before Dom(['jq-2.0', 'swipeshow'])
+before -> chai.use(require('chai-jquery'))

@@ -1,4 +1,10 @@
-v0.10.4 / Oct 4, 2013
+v0.10.5 - Feb 12, 2014
+----------------------
+
+ * Add tests.
+ * Prevent disappearing YouTube videos. (@mariacha, #14)
+
+v0.10.4 - Oct 4, 2013
 ---------------------
 
  * Support browsers without translate3d (eg, Opera).

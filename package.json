@@ -12,5 +12,15 @@
   "readmeFilename": "Readme.md",
   "bugs": {
     "url": "https://github.com/rstacruz/swipeshow/issues"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -R spec --recursive --compilers coffee:coffee-script/register"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "coffee-script": "*",
+    "jsdom": "*",
+    "sinon": "*"
   }
 }

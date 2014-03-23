@@ -413,7 +413,7 @@
         if ($container.is(':animated')) $container.stop();
 
         // Make some elements hard to swipe from.
-        if ($(e.target).is('button, a, [data-tappable]')) {
+        if ($(e.target).is('button, a, input, select, [data-tappable]')) {
           minDelta = 100;
         } else {
           minDelta = 0;

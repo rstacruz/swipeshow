@@ -60,7 +60,7 @@
 
   $.swipeshow = {};
 
-  $.swipeshow.version = "0.10.5";
+  $.swipeshow.version = "0.10.6";
 
   // Detect transition support, jQuery 1.8+ style.
   var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
@@ -413,7 +413,7 @@
         if ($container.is(':animated')) $container.stop();
 
         // Make some elements hard to swipe from.
-        if ($(e.target).is('button, a, [data-tappable]')) {
+        if ($(e.target).is('button, a, input, select, [data-tappable]')) {
           minDelta = 100;
         } else {
           minDelta = 0;

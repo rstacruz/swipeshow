@@ -1,3 +1,8 @@
+v0.10.6 - Mar 23, 2014
+----------------------
+
+ * Fix `input` elements not being clickable inside slideshows. (Ty Yalniz)
+
 v0.10.5 - Feb 12, 2014
 ----------------------
 

@@ -41,7 +41,7 @@ Swipeshow goes by the assumption that your slideshow element looks like
 ``` html
 <div class="my-gallery swipeshow">
   <ul class="slides">
-    <li class="slide"> ... </il>
+    <li class="slide"> ... </li>
     <li class="slide"> ... </li>
     <li class="slide"> ... </li>
   </ul>
@@ -114,7 +114,7 @@ They will work as expected.
 ``` html
 <div class="my-gallery swipeshow">
   <ul class="slides">
-    <li class="slide"> ... </il>
+    <li class="slide"> ... </li>
     <li class="slide"> ... </li>
     <li class="slide"> ... </li>
   </ul>

@@ -232,6 +232,14 @@ interface to manage the slides and timers.
 
 [Cycler.js]: https://github.com/rstacruz/jquery-stuff/blob/master/cycler
 
+Alternatives
+------------
+
+You may also want to try other libraries. These libraries also support touch, swipe, and mobile-friendly transitions:
+
+ * [Slidesjs](http://www.slidesjs.com/)
+ * [Flexslider](https://github.com/woothemes/flexslider)
+
 Limitations
 -----------
 

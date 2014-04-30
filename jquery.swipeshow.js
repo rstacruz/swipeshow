@@ -14,7 +14,7 @@
  *         <li class="slide"> ... </li>
  *         <li class="slide"> ... </li>
  *       </ul>
- *     
+ *
  *       <!-- optional controls: -->
  *       <button class="next"></button>
  *       <button class="previous"></button>
@@ -89,10 +89,12 @@
     this.$next      = getElement(this.$slideshow, options.$next, '.next', '~ .controls .next');
     this.$previous  = getElement(this.$slideshow, options.$previous, '.previous', '~ .controls .previous');
     this.$dots      = getElement(this.$slideshow, options.$dots, '.dots', '~ .controls .dots');
+    this.$labels    = getElement(this.$slideshow, options.$labels, '.labels', '~ .controls .labels');
 
     this._addClasses();
     this._bindButtons();
     this._buildDots();
+    this._buildLabels();
     if (options.keys) this._bindKeys();
 
     this.cycler     = this._getCycler();
@@ -130,6 +132,7 @@
       var $container = this.$container;
       var $slides    = this.$slides;
       var $dots      = this.$dots;
+      var $labels    = this.$labels;
       var tag = this.tag;
 
       // Kill the timer.
@@ -144,6 +147,9 @@
       // Remove dots
       if ($dots.length) $dots.html('');
 
+      // Remove labels
+      if ($labels.length) $labels.html('');
+
       // Unregister so that it can be initialized again later.
       $slideshow.data('swipeshow', null);
 
@@ -152,6 +158,7 @@
       $container.removeClass('gliding grabbed');
       $slides.removeClass('active');
       $dots.removeClass('active');
+      $labels.removeClass('active');
       $('html').removeClass('swipeshow-grabbed');
     },
 
@@ -186,6 +193,12 @@
       if (this.$dots.length) {
         this.$dots.find('.dot-item.active').removeClass('active');
         this.$dots.find('.dot-item[data-index="'+i+'"]').addClass('active');
+      }
+
+      // Labels
+      if (this.$labels.length) {
+        this.$labels.find('.label-item.active').removeClass('active');
+        this.$labels.find('.label-item[data-index="'+i+'"]').addClass('active');
       }
 
       // Move to the slide
@@ -251,6 +264,31 @@
       });
 
       $dots.on('click'+tag, '.dot-item', function() {
+        var index = +($(this).data('index'));
+        ss.goTo(index);
+      });
+
+    },
+
+    _buildLabels: function() {
+      var ss    = this;
+      var $labels = ss.$labels;
+      var tag   = ss.tag;
+
+      if (!$labels.length) return;
+
+      $labels.html('').addClass('active');
+
+      ss.$slides.each(function(i) {
+        var label = $(this).data('label');
+        $labels.append($(
+          "<button class='label-item' data-index='"+i+"'>"+
+          "<span class='label' data-number='"+(i+1)+"'>"+label+"</span>"+
+          "</button>"
+        ));
+      });
+
+      $labels.on('click'+tag, '.label-item', function() {
         var index = +($(this).data('index'));
         ss.goTo(index);
       });
@@ -466,7 +504,7 @@
         // Record when it was last touched, so that when the finger is lifted, we
         // know how long it's been since
         lastTouch = +new Date();
-        
+
         setOffset($container, target, 0);
       });
 

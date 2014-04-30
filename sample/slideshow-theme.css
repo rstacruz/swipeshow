@@ -141,3 +141,32 @@
 .slideshow .dot-item.active .dot {
   background-color: white;
 }
+
+.slideshow .labels {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  list-style: none;
+}
+
+.slideshow .label-item {
+  background: none;
+  border: 0;
+  width: 50px;
+}
+
+.slideshow .label {
+  display: inline-block;
+  font-family: Open Sans, sans-serif;
+  font-weight: bold;
+  color: white;
+}
+
+.slideshow .label-item:active,
+.slideshow .label-item.active {
+  border: 2px solid white;
+  border-radius: 1em;
+  outline: none;
+}

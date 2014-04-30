@@ -11,7 +11,6 @@ all: \
 pages: \
 	pages/index.html \
 	pages/style.css \
-	pages/swipeshow.css \
 	pages/slideshow-theme.css \
 	pages/jquery.swipeshow.min.js \
 	pages/jquery.swipeshow.css \

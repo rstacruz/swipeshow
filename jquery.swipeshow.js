@@ -14,7 +14,7 @@
  *         <li class="slide"> ... </li>
  *         <li class="slide"> ... </li>
  *       </ul>
- *     
+ *
  *       <!-- optional controls: -->
  *       <button class="next"></button>
  *       <button class="previous"></button>
@@ -263,9 +263,9 @@
       var RIGHT = 39, LEFT = 37;
 
       $(document).on('keyup'+tag, function(e) {
-        if (e.keyCode == RIGHT)
+        if (e.keyCode == RIGHT && ss.options.keys)
           ss.next();
-        else if (e.keyCode == LEFT)
+        else if (e.keyCode == LEFT && ss.options.keys)
           ss.previous();
       });
     },
@@ -466,7 +466,7 @@
         // Record when it was last touched, so that when the finger is lifted, we
         // know how long it's been since
         lastTouch = +new Date();
-        
+
         setOffset($container, target, 0);
       });
 

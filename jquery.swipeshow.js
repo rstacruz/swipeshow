@@ -63,7 +63,7 @@
   $.swipeshow.version = "0.10.6";
 
   // Detect transition support, jQuery 1.8+ style.
-  var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') == 'string';
+  var transitions = typeof $("<div>").css({transition: 'all'}).css('transition') === 'string';
 
   var touchEnabled = ('ontouchstart' in document.documentElement);
 
@@ -263,9 +263,9 @@
       var RIGHT = 39, LEFT = 37;
 
       $(document).on('keyup'+tag, function(e) {
-        if (e.keyCode == RIGHT && ss.options.keys)
+        if (e.keyCode === RIGHT && ss.options.keys)
           ss.next();
-        else if (e.keyCode == LEFT && ss.options.keys)
+        else if (e.keyCode === LEFT && ss.options.keys)
           ss.previous();
       });
     },

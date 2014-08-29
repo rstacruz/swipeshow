@@ -11,7 +11,10 @@
     "jquery": "*"
   },
   "license": "MIT",
-  "main": "jquery.swipeshow.js",
+  "main": [
+    "jquery.swipeshow.js",
+    "jquery.swipeshow.css"
+  ],
   "scripts": [
     "jquery.swipeshow.js"
   ],

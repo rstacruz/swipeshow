@@ -26,9 +26,4 @@ To regenerate .min.js:
 To bump version:
 
     $ bump jquery.swipeshow.js *.json
-    # github.com/marksteve/bump
-    
-Or manually:
-
-    $ vim jquery.swipeshow.js
-    /swipeshow.version
+    # npmjs.org/bump-cli

@@ -1,3 +1,7 @@
+## v0.10.7 - August 29, 2014
+
+ * Add CSS files to the bower.json manifest. (@billymoon, #26)
+
 v0.10.6 - Mar 23, 2014
 ----------------------
 

@@ -1,3 +1,7 @@
+## v0.10.9 - January 10, 2015
+
+ * Fix clicks not firing in touch screen devices (@iankpconcentricsky, #28)
+
 ## v0.10.8 - August 29, 2014
 
  * Re-release with proper version numbers (`$.swipeshow.version`). No practical changes.

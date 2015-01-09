@@ -504,8 +504,6 @@
         // Switch to that slide.
         c.goTo(index);
 
-        e.preventDefault();
-
         // Restart the slideshow if it was already started before.
         if (start.started) c.start();
 

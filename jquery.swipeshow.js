@@ -150,7 +150,9 @@
       // Remove magic classes
       $slideshow.removeClass('running paused swipeshow-active touch no-touch');
       $container.removeClass('gliding grabbed');
+      $container.attr('style', '');
       $slides.removeClass('active');
+      $slides.attr('style', '');
       $dots.removeClass('active');
       $('html').removeClass('swipeshow-grabbed');
     },

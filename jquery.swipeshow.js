@@ -14,7 +14,7 @@
  *         <li class="slide"> ... </li>
  *         <li class="slide"> ... </li>
  *       </ul>
- *     
+ *
  *       <!-- optional controls: -->
  *       <button class="next"></button>
  *       <button class="previous"></button>
@@ -31,8 +31,9 @@
  *       interval: 3000,     // Time between movement (ms)
  *       initial: 0,         // First slide's index
  *       speed: 700,         // Animation speed (ms)
+ *       easing: ease,       // Easing options (default is `ease`)
  *       friction: 0.3,      // What happens when you swipe out of bounds?
- *       mouse: true,        // enable mouse dragging controls?
+ *       mouse: true,        // Enable mouse dragging controls?
  *       keys: true,
  *
  *       onactivate: function(){},
@@ -119,6 +120,7 @@
 
     defaults: {
       speed: 400,
+      easing: 'ease',
       friction: 0.3,
       mouse: true,
       keys: true,
@@ -201,7 +203,7 @@
 
     _moveToSlide: function(i) {
       var width = this.$slideshow.width();
-      setOffset(this.$container, -1 * width * i, this.options.speed);
+      setOffset(this.$container, -1 * width * i, this.options.speed, this.options.easing);
     },
 
     /**
@@ -389,7 +391,7 @@
       var lastTouch;
       var minDelta; // Minimum change for it to take effect.
 
-      var width; // widtih of the slideshow
+      var width; // width of the slideshow
       var length = c.list.length;
       var friction = options.friction;
 
@@ -468,7 +470,7 @@
         // Record when it was last touched, so that when the finger is lifted, we
         // know how long it's been since
         lastTouch = +new Date();
-        
+
         setOffset($container, target, 0);
       });
 
@@ -570,13 +572,13 @@
    * `speed` is in milliseconds. If `speed` is `0`, it happens instantly.
    */
 
-  function setOffset($el, left, speed) {
+  function setOffset($el, left, speed, easing) {
     $el.data('swipeshow:left', left);
     if (transitions) {
       if (speed === 0) {
         $el.css({ transform: translate(left, 0), transition: 'none' });
       } else {
-        $el.css({ transform: translate(left, 0), transition: 'all '+speed+'ms ease' });
+        $el.css({ transform: translate(left, 0), transition: 'all '+speed+'ms '+ easing });
       }
     } else {
       if (speed === 0) {

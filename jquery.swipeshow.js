@@ -451,6 +451,8 @@
 
         delta = x - origin.x;
 
+        if (options.reverse) delta = -delta;
+
         // When swiping was triggered on a button, it should be harder to swipe from.
         if (Math.abs(delta) <= minDelta) delta = 0;
 

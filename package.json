@@ -16,7 +16,6 @@
   "scripts": {
     "test": "mocha",
     "autotest": "mocha -R min -b --watch",
-    "prepublish": "make -B jquery.swipeshow.min.js"
   },
   "devDependencies": {
     "mocha": "~1.18.2",

@@ -1,13 +1,13 @@
 {
-  "name": "swipeshow",
-  "version": "0.10.9",
+  "name": "ab-swipeshow",
+  "version": "0.10.10",
   "author": "Rico Sta. Cruz <hi@ricostacruz.com>",
   "description": "The unassuming touch-enabled JavaScript slideshow.",
   "license": "MIT",
   "main": "jquery.swipeshow.min.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/rstacruz/swipeshow.git"
+    "url": "git@github.com:antoniobrandao/swipeshow.git"
   },
   "readmeFilename": "Readme.md",
   "bugs": {

@@ -1,3 +1,5 @@
+This is a fork that simply adds the option to reverse the movement direction when dragging. Useful for app UIs that rotate in desktop systems.
+
 Swipeshow
 =========
 

@@ -1,3 +1,5 @@
+This is a fork that simply adds the option to reverse the movement direction when dragging. Useful for app UIs that rotate in desktop systems.
+
 Swipeshow
 =========
 
@@ -20,6 +22,7 @@ More features!
  * Graceful degradation (shows slide #1 when JS isn't available)
  * [Auto-advance](#options) can be turned on/off (`autostart`)
  * [Configurable](#options), like... totally
+ * [Reverse](#options) can be turned on/off (`reverse`)
  * [Can be controlled](#controlling-the-slideshow) via JavaScript
 
 How to use
@@ -89,6 +92,7 @@ $(".my-gallery").swipeshow({
   initial: 0,         /* First slide's index */
   speed: 700,         /* Animation speed (ms) */
   friction: 0.3,      /* Bounce-back behavior; use `0` to disable */
+  reverse: false,     /* enable reverse dragging direction */
   mouse: true,        /* enable mouse dragging controls */
   keys: true,         /* enable left/right keyboard keys */
 
